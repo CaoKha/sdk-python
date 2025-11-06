@@ -19,12 +19,3 @@ class FundingSettlement(BaseModel, BaseConfig):
     id: UUID = Field(..., description="Funding settlement ID")
     fixing_price: float = Field(..., description="Fixing price")
     time: str = Field(..., description="Funding settlement time")
-
-
-class GetFundingSettlementsResponse(BaseModel, BaseConfig):
-    """Funding settlement response."""
-
-    data: list[FundingSettlement] = Field(
-        ..., description="List of funding settlements"
-    )
-    count: int = Field(..., description="Number of items returned")
