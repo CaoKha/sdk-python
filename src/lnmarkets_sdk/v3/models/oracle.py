@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from lnmarkets_sdk._internal.models import BaseConfig, FromToLimitParams
+from lnmarkets_sdk.v3._internal.models import BaseConfig, FromToLimitParams
 
 
 class OracleIndex(BaseModel, BaseConfig):

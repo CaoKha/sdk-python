@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from lnmarkets_sdk._internal.models import UUID, BaseConfig
+from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig
 
 
 class FundingFees(BaseModel, BaseConfig):

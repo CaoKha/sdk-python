@@ -6,8 +6,8 @@ import os
 import pytest
 from dotenv import load_dotenv
 
-from lnmarkets_sdk.http.client import APIAuthContext, APIClientConfig, LNMClient
-from lnmarkets_sdk.models.account import (
+from lnmarkets_sdk.v3.http.client import APIAuthContext, APIClientConfig, LNMClient
+from lnmarkets_sdk.v3.models.account import (
     AddBitcoinAddressParams,
     DepositLightningParams,
     GetInternalDepositsParams,
@@ -19,7 +19,7 @@ from lnmarkets_sdk.models.account import (
     WithdrawLightningParams,
     WithdrawOnChainParams,
 )
-from lnmarkets_sdk.models.futures_isolated import FuturesOrder
+from lnmarkets_sdk.v3.models.futures_isolated import FuturesOrder
 
 load_dotenv()
 
@@ -270,7 +270,7 @@ class TestFuturesIntegration:
             assert isinstance(leaderboard.daily, list)
 
     async def test_get_candles(self):
-        from lnmarkets_sdk.models.futures_data import GetCandlesParams
+        from lnmarkets_sdk.v3.models.futures_data import GetCandlesParams
 
         async with LNMClient(create_public_config()) as client:
             params = GetCandlesParams(
@@ -316,7 +316,7 @@ class TestFuturesIsolatedIntegration:
             assert trade.id in trade_ids
 
             # Cancel the trade
-            from lnmarkets_sdk.models.futures_isolated import CancelTradeParams
+            from lnmarkets_sdk.v3.models.futures_isolated import CancelTradeParams
 
             cancel_params = CancelTradeParams(id=trade.id)
             canceled = await client.futures.isolated.cancel(cancel_params)
@@ -349,7 +349,7 @@ class TestFuturesCrossIntegration:
             assert isinstance(open_orders, list)
 
             # Get filled orders
-            from lnmarkets_sdk.models.futures_cross import GetFilledOrdersParams
+            from lnmarkets_sdk.v3.models.futures_cross import GetFilledOrdersParams
 
             params = GetFilledOrdersParams(limit=5)
             filled_orders = await client.futures.cross.get_filled_orders(params)
@@ -367,7 +367,7 @@ class TestOracleIntegration:
             assert result[0].time is not None
 
     async def test_get_index(self):
-        from lnmarkets_sdk.models.oracle import GetIndexParams
+        from lnmarkets_sdk.v3.models.oracle import GetIndexParams
 
         async with LNMClient(create_public_config()) as client:
             params = GetIndexParams(limit=5)
@@ -391,7 +391,7 @@ class TestSyntheticUSDIntegration:
         reason="V3_API_KEY not set in environment",
     )
     async def test_get_swaps(self):
-        from lnmarkets_sdk.models.synthetic_usd import GetSwapsParams
+        from lnmarkets_sdk.v3.models.synthetic_usd import GetSwapsParams
 
         async with LNMClient(create_auth_config()) as client:
             params = GetSwapsParams(limit=5)
