@@ -2,7 +2,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from lnmarkets_sdk._internal.models import UUID, BaseConfig, FromToLimitParams
+from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig, FromToLimitParams
 
 
 class Account(BaseModel, BaseConfig):

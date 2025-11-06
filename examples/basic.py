@@ -8,9 +8,9 @@ from pprint import pprint
 
 from dotenv import load_dotenv
 
-from lnmarkets_sdk.http.client import APIAuthContext, APIClientConfig, LNMClient
-from lnmarkets_sdk.models.account import GetLightningDepositsParams
-from lnmarkets_sdk.models.futures_cross import (
+from lnmarkets_sdk.v3.http.client import APIAuthContext, APIClientConfig, LNMClient
+from lnmarkets_sdk.v3.models.account import GetLightningDepositsParams
+from lnmarkets_sdk.v3.models.futures_cross import (
     FuturesCrossOrderLimit,
 )
 

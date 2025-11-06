@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lnmarkets_sdk.http.client import LNMClient
+    from lnmarkets_sdk.v3.http.client import LNMClient
 
-from lnmarkets_sdk.models.synthetic_usd import (
+from lnmarkets_sdk.v3.models.synthetic_usd import (
     BestPriceResponse,
     CreateSwapOutput,
     GetSwapsParams,
