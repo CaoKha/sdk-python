@@ -1,5 +1,7 @@
 # LN Markets SDK v3
 
+[![CI](https://github.com/ln-markets/sdk-python/actions/workflows/check.yml/badge.svg)](https://github.com/ln-markets/sdk-python/actions/workflows/check.yml)
+
 This is the Python version of the LN Markets API SDK. It provides a client-based interface for interacting with the LN Markets API.
 
 ## Usage
