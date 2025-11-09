@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 urls = { "Homepage" = "https://github.com/ln-markets/sdk-python", "Repository" = "https://github.com/ln-markets/sdk-python", "Bug Tracker" = "https://github.com/ln-markets/sdk-python/issues" }
 
 name = "lnmarkets-sdk"
-version = "0.0.11"
+version = "0.0.12"
 description = "LN Markets API Python SDK"
 readme = "README.md"
 license = { text = "MIT" }
@@ -42,6 +42,8 @@ dev = [
   { include-group = "test" },
   "python-dotenv>=1.0.1",
   "playwright>=1.40.0",
+  "faker>=37.12.0",
+  "faker-crypto>=1.0.1",
 ]
 lint = ["ruff>=0.12.0", "pyright>=1.1.390"]
 test = ["pytest", "pytest-asyncio", "pytest-httpx>=0.35.0"]

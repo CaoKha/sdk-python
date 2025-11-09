@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, SkipValidation, model_validator
 
 from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig, FromToLimitParams
 
@@ -34,6 +34,9 @@ class FuturesOrder(BaseModel, BaseConfig):
     type: Literal["l", "m"] = Field(
         ..., description="Trade type: l (limit) or m (market)"
     )
+    client_id: str | None = Field(
+        default=None, description="Unique client ID for the trade"
+    )
 
     @model_validator(mode="after")
     def validate_schema(self):
@@ -47,68 +50,69 @@ class FuturesOrder(BaseModel, BaseConfig):
 
 
 class FuturesTrade(BaseModel, BaseConfig):
-    canceled: bool
-    closed: bool
-    closed_at: str | None = None
-    closing_fee: float
-    created_at: str
-    entry_margin: float | None = None
-    entry_price: float | None = None
-    exit_price: float | None = None
-    filled_at: str | None = None
-    id: UUID
-    leverage: float
-    liquidation: float
-    maintenance_margin: float
-    margin: float
-    open: bool
-    opening_fee: float
-    pl: float
-    price: float
-    quantity: float
-    running: bool
-    side: Literal["b", "s"]
-    stoploss: float
-    sum_funding_fees: float
-    takeprofit: float
-    type: Literal["l", "m"]
+    canceled: SkipValidation[bool]
+    closed: SkipValidation[bool]
+    closed_at: SkipValidation[str] | None = None
+    closing_fee: SkipValidation[float]
+    created_at: SkipValidation[str]
+    entry_margin: SkipValidation[float] | None = None
+    entry_price: SkipValidation[float] | None = None
+    exit_price: SkipValidation[float] | None = None
+    filled_at: SkipValidation[str] | None = None
+    id: SkipValidation[UUID]
+    leverage: SkipValidation[float]
+    liquidation: SkipValidation[float]
+    maintenance_margin: SkipValidation[float]
+    margin: SkipValidation[float]
+    open: SkipValidation[bool]
+    opening_fee: SkipValidation[float]
+    pl: SkipValidation[float]
+    price: SkipValidation[float]
+    quantity: SkipValidation[float]
+    running: SkipValidation[bool]
+    side: SkipValidation[Literal["b", "s"]]
+    stoploss: SkipValidation[float]
+    sum_funding_fees: SkipValidation[float]
+    takeprofit: SkipValidation[float]
+    type: SkipValidation[Literal["l", "m"]]
+    client_id: SkipValidation[str] | None = None
 
 
 class FuturesOpenTrade(FuturesTrade):
-    canceled: Literal[False] = False
-    closed: Literal[False] = False
+    canceled: SkipValidation[bool] = False
+    closed: SkipValidation[bool] = False
     closed_at: None = None
     filled_at: None = None
-    running: Literal[False] = False
-    type: Literal["l"] = "l"
+    running: SkipValidation[bool] = False
+    type: SkipValidation[Literal["l"]] = "l"
 
 
 class FuturesRunningTrade(FuturesTrade):
-    canceled: Literal[False] = False
-    closed: Literal[False] = False
+    canceled: SkipValidation[bool] = False
+    closed: SkipValidation[bool] = False
     closed_at: None = None
-    filled_at: str = ""
-    running: Literal[True] = True
+    filled_at: SkipValidation[str] | None = None
+    running: SkipValidation[bool] = True
 
 
 class FuturesClosedTrade(FuturesTrade):
-    canceled: Literal[False] = False
-    closed: Literal[True] = True
-    closed_at: str = ""
-    exit_price: float = 0.0
-    filled_at: str = ""
-    open: Literal[False] = False
-    running: Literal[False] = False
+    canceled: SkipValidation[bool] = False
+    closed: SkipValidation[bool] = True
+    closed_at: SkipValidation[str] = ""
+    exit_price: SkipValidation[float] = 0.0
+    filled_at: SkipValidation[str] = ""
+    open: SkipValidation[bool] = False
+    running: SkipValidation[bool] = False
 
 
 class FuturesCanceledTrade(FuturesTrade):
-    canceled: Literal[True] = True
-    closed: Literal[False] = False
-    closed_at: str = ""
+    canceled: SkipValidation[bool] = True
+    closed: SkipValidation[bool] = False
+    closed_at: SkipValidation[str] = ""
     filled_at: None = None
-    open: Literal[False] = False
-    running: Literal[False] = False
-    type: Literal["l"] = "l"
+    open: SkipValidation[bool] = False
+    running: SkipValidation[bool] = False
+    type: SkipValidation[Literal["l"]] = "l"
 
 
 class AddMarginParams(BaseModel, BaseConfig):

@@ -31,7 +31,25 @@ class FuturesCrossClient:
     async def new_order(
         self, params: FuturesCrossOrderLimit | FuturesCrossOrderMarket
     ) -> FuturesCrossOpenOrder | FuturesCrossFilledOrder | FuturesCrossCanceledOrder:
-        """Place a new cross margin order."""
+        """
+        Place a new cross margin order.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import FuturesCrossOrderLimit
+
+        async with LNMClient(config) as client:
+            params = FuturesCrossOrderLimit(
+                type="limit",
+                side="b",
+                price=100_000,
+                quantity=1,
+                client_id="my-order-123"
+            )
+            order = await client.futures.cross.new_order(params)
+            print(f"Order ID: {order.id}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/cross/order",
@@ -43,7 +61,16 @@ class FuturesCrossClient:
         )
 
     async def get_position(self):
-        """Get current cross margin position."""
+        """
+        Get current cross margin position.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            position = await client.futures.cross.get_position()
+            print(f"Margin: {position.margin}, P&L: {position.total_pl}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/cross/position",
@@ -52,7 +79,17 @@ class FuturesCrossClient:
         )
 
     async def get_open_orders(self):
-        """Get all open cross margin orders."""
+        """
+        Get all open cross margin orders.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            orders = await client.futures.cross.get_open_orders()
+            for order in orders:
+                print(f"Order ID: {order.id}, Price: {order.price}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/cross/orders/open",
@@ -61,7 +98,20 @@ class FuturesCrossClient:
         )
 
     async def get_filled_orders(self, params: GetFilledOrdersParams | None = None):
-        """Get filled cross margin orders history."""
+        """
+        Get filled cross margin orders history.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import GetFilledOrdersParams
+
+        async with LNMClient(config) as client:
+            params = GetFilledOrdersParams(limit=10)
+            orders = await client.futures.cross.get_filled_orders(params)
+            for order in orders:
+                print(f"Order ID: {order.id}, Type: {order.type}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/cross/orders/filled",
@@ -73,7 +123,16 @@ class FuturesCrossClient:
     async def close(
         self,
     ) -> FuturesCrossOpenOrder | FuturesCrossFilledOrder | FuturesCrossCanceledOrder:
-        """Close cross margin position."""
+        """
+        Close cross margin position.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            result = await client.futures.cross.close()
+            print(f"Position closed: {result}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/cross/position/close",
@@ -84,7 +143,19 @@ class FuturesCrossClient:
         )
 
     async def cancel(self, params: CancelOrderParams):
-        """Cancel a cross margin order."""
+        """
+        Cancel a cross margin order.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import CancelOrderParams
+
+        async with LNMClient(config) as client:
+            params = CancelOrderParams(id=order_id)
+            canceled = await client.futures.cross.cancel(params)
+            print(f"Canceled: {canceled.canceled}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/cross/order/cancel",
@@ -94,7 +165,16 @@ class FuturesCrossClient:
         )
 
     async def cancel_all(self):
-        """Cancel all cross margin orders."""
+        """
+        Cancel all cross margin orders.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            canceled = await client.futures.cross.cancel_all()
+            print(f"Canceled {len(canceled)} orders")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/cross/orders/cancel-all",
@@ -103,7 +183,19 @@ class FuturesCrossClient:
         )
 
     async def deposit(self, params: DepositParams):
-        """Deposit funds to cross margin account."""
+        """
+        Deposit funds to cross margin account.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import DepositParams
+
+        async with LNMClient(config) as client:
+            params = DepositParams(amount=100_000)
+            position = await client.futures.cross.deposit(params)
+            print(f"New margin: {position.margin}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/cross/deposit",
@@ -113,7 +205,19 @@ class FuturesCrossClient:
         )
 
     async def withdraw(self, params: WithdrawParams):
-        """Withdraw funds from cross margin account."""
+        """
+        Withdraw funds from cross margin account.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import WithdrawParams
+
+        async with LNMClient(config) as client:
+            params = WithdrawParams(amount=50_000)
+            position = await client.futures.cross.withdraw(params)
+            print(f"Remaining margin: {position.margin}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/cross/withdraw",
@@ -123,7 +227,19 @@ class FuturesCrossClient:
         )
 
     async def set_leverage(self, params: SetLeverageParams):
-        """Set leverage for cross margin trading."""
+        """
+        Set leverage for cross margin trading.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import SetLeverageParams
+
+        async with LNMClient(config) as client:
+            params = SetLeverageParams(leverage=50)
+            position = await client.futures.cross.set_leverage(params)
+            print(f"New leverage: {position.leverage}")
+        ```
+        """
         return await self._client.request(
             "PUT",
             "/futures/cross/leverage",
@@ -133,7 +249,20 @@ class FuturesCrossClient:
         )
 
     async def get_transfers(self, params: GetTransfersParams | None = None):
-        """Get cross margin transfer history."""
+        """
+        Get cross margin transfer history.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import GetTransfersParams
+
+        async with LNMClient(config) as client:
+            params = GetTransfersParams(limit=10)
+            transfers = await client.futures.cross.get_transfers(params)
+            for transfer in transfers:
+                print(f"Transfer: {transfer.id}, Amount: {transfer.amount}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/cross/transfers",
@@ -143,7 +272,20 @@ class FuturesCrossClient:
         )
 
     async def get_funding_fees(self, params: GetCrossFundingFeesParams | None = None):
-        """Get funding fees for cross margin."""
+        """
+        Get funding fees for cross margin.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_cross import GetCrossFundingFeesParams
+
+        async with LNMClient(config) as client:
+            params = GetCrossFundingFeesParams(limit=10)
+            fees = await client.futures.cross.get_funding_fees(params)
+            for fee in fees:
+                print(f"Fee: {fee.fee}, Time: {fee.time}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/cross/funding-fees",

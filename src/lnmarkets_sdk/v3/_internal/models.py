@@ -14,7 +14,7 @@ class BaseConfig:
     """Base configuration for all Pydantic models."""
 
     model_config = ConfigDict(
-        extra="forbid",
+        extra="allow",
         validate_assignment=True,
         str_strip_whitespace=True,
         use_enum_values=True,

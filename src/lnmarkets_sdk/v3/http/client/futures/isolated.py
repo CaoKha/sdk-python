@@ -28,7 +28,27 @@ class FuturesIsolatedClient:
         self._client = client
 
     async def new_trade(self, params: FuturesOrder):
-        """Open a new isolated margin futures trade."""
+        """
+        Open a new isolated margin futures trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import FuturesOrder
+
+        async with LNMClient(config) as client:
+            params = FuturesOrder(
+                type="l",  # limit order
+                side="b",  # buy
+                price=100_000,
+                quantity=1,
+                leverage=100,
+                stoploss=90_000,  # optional stop loss
+                takeprofit=110_000,  # optional take profit
+            )
+            trade = await client.futures.isolated.new_trade(params)
+            print(f"Trade ID: {trade.id}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/isolated/trade",
@@ -38,7 +58,17 @@ class FuturesIsolatedClient:
         )
 
     async def get_running_trades(self):
-        """Get all running isolated margin trades."""
+        """
+        Get all running isolated margin trades.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            trades = await client.futures.isolated.get_running_trades()
+            for trade in trades:
+                print(f"Trade ID: {trade.id}, P&L: {trade.pl}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/isolated/trades/running",
@@ -47,7 +77,17 @@ class FuturesIsolatedClient:
         )
 
     async def get_open_trades(self):
-        """Get all open isolated margin trades."""
+        """
+        Get all open isolated margin trades.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            trades = await client.futures.isolated.get_open_trades()
+            for trade in trades:
+                print(f"Trade ID: {trade.id}, Price: {trade.price}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/isolated/trades/open",
@@ -56,17 +96,42 @@ class FuturesIsolatedClient:
         )
 
     async def get_closed_trades(self, params: GetClosedTradesParams | None = None):
-        """Get closed isolated margin trades history."""
+        """
+        Get closed isolated margin trades history.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import GetClosedTradesParams
+
+        async with LNMClient(config) as client:
+            params = GetClosedTradesParams(limit=10)
+            trades = await client.futures.isolated.get_closed_trades(params)
+            for trade in trades:
+                print(f"Trade ID: {trade.id}, P&L: {trade.pl}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/isolated/trades/closed",
             params=params,
             credentials=True,
-            response_model=list[FuturesClosedTrade],
+            response_model=list[FuturesClosedTrade | FuturesCanceledTrade],
         )
 
     async def close(self, params: CloseTradeParams):
-        """Close an isolated margin trade."""
+        """
+        Close an isolated margin trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import CloseTradeParams
+
+        async with LNMClient(config) as client:
+            params = CloseTradeParams(id=trade_id)
+            closed = await client.futures.isolated.close(params)
+            print(f"Closed: {closed.closed}, P&L: {closed.pl}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/isolated/trade/close",
@@ -76,7 +141,19 @@ class FuturesIsolatedClient:
         )
 
     async def cancel(self, params: CancelTradeParams):
-        """Cancel an isolated margin trade."""
+        """
+        Cancel an isolated margin trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import CancelTradeParams
+
+        async with LNMClient(config) as client:
+            params = CancelTradeParams(id=trade_id)
+            canceled = await client.futures.isolated.cancel(params)
+            print(f"Canceled: {canceled.canceled}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/isolated/trade/cancel",
@@ -86,7 +163,16 @@ class FuturesIsolatedClient:
         )
 
     async def cancel_all(self):
-        """Cancel all isolated margin trades."""
+        """
+        Cancel all isolated margin trades.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            canceled = await client.futures.isolated.cancel_all()
+            print(f"Canceled {len(canceled)} trades")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/isolated/trades/cancel-all",
@@ -95,7 +181,19 @@ class FuturesIsolatedClient:
         )
 
     async def add_margin(self, params: AddMarginParams):
-        """Add margin to an isolated trade."""
+        """
+        Add margin to an isolated trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import AddMarginParams
+
+        async with LNMClient(config) as client:
+            params = AddMarginParams(id=trade_id, amount=10_000)
+            updated = await client.futures.isolated.add_margin(params)
+            print(f"New margin: {updated.margin}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/isolated/trade/add-margin",
@@ -105,7 +203,19 @@ class FuturesIsolatedClient:
         )
 
     async def cash_in(self, params: CashInParams):
-        """Cash in on an isolated trade."""
+        """
+        Cash in on an isolated trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import CashInParams
+
+        async with LNMClient(config) as client:
+            params = CashInParams(id=trade_id, amount=10_000)
+            updated = await client.futures.isolated.cash_in(params)
+            print(f"Trade margin: {updated.margin}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/futures/isolated/trade/cash-in",
@@ -115,7 +225,19 @@ class FuturesIsolatedClient:
         )
 
     async def update_stoploss(self, params: UpdateStoplossParams):
-        """Update stop loss for an isolated trade."""
+        """
+        Update stop loss for an isolated trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import UpdateStoplossParams
+
+        async with LNMClient(config) as client:
+            params = UpdateStoplossParams(id=trade_id, stoploss=90_000)
+            updated = await client.futures.isolated.update_stoploss(params)
+            print(f"New stop loss: {updated.stoploss}")
+        ```
+        """
         return await self._client.request(
             "PUT",
             "/futures/isolated/trade/stoploss",
@@ -125,7 +247,19 @@ class FuturesIsolatedClient:
         )
 
     async def update_takeprofit(self, params: UpdateTakeprofitParams):
-        """Update take profit for an isolated trade."""
+        """
+        Update take profit for an isolated trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import UpdateTakeprofitParams
+
+        async with LNMClient(config) as client:
+            params = UpdateTakeprofitParams(id=trade_id, takeprofit=110_000)
+            updated = await client.futures.isolated.update_takeprofit(params)
+            print(f"New take profit: {updated.takeprofit}")
+        ```
+        """
         return await self._client.request(
             "PUT",
             "/futures/isolated/trade/takeprofit",
@@ -137,7 +271,20 @@ class FuturesIsolatedClient:
     async def get_funding_fees(
         self, params: GetIsolatedFundingFeesParams | None = None
     ):
-        """Get funding fees for isolated trades."""
+        """
+        Get funding fees for isolated trades.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import GetIsolatedFundingFeesParams
+
+        async with LNMClient(config) as client:
+            params = GetIsolatedFundingFeesParams(limit=10, trade_id=trade_id)
+            fees = await client.futures.isolated.get_funding_fees(params)
+            for fee in fees:
+                print(f"Fee: {fee.fee}, Time: {fee.time}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/futures/isolated/funding-fees",

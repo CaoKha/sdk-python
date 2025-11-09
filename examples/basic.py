@@ -105,7 +105,7 @@ async def example_authenticated_endpoints():
 
         # Get lightning deposits (last 5)
         deposits = await client.account.get_lightning_deposits(
-            GetLightningDepositsParams(from_="2022-01-01", limit=5)
+            GetLightningDepositsParams(from_="1970-01-01T00:00:00.000Z", limit=5)
         )
         print(f"\n--- Recent Lightning Deposits (Last {len(deposits)}) ---")
         for deposit in deposits:
@@ -136,7 +136,11 @@ async def example_authenticated_endpoints():
         try:
             print("\n--- Try to open a new cross order ---")
             order_params = FuturesCrossOrderLimit(
-                type="limit", price=1.5, quantity=1, side="b"
+                type="limit",
+                price=101000,
+                quantity=10,
+                side="s",
+                client_id="custom-ref-123",
             )
             new_order = await client.futures.cross.new_order(order_params)
             print(f"New order: {new_order}")

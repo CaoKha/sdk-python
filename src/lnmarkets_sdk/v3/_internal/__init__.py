@@ -62,7 +62,7 @@ class BaseClient:
             data = ""
             if params_dict:
                 if method == "GET":
-                    data = f"?{urlencode({k: str(v) for k, v in params_dict.items()})}"
+                    data = f"?{urlencode(params_dict)}"
                 else:
                     data = json.dumps(params_dict, separators=(",", ":"))
                     headers.update({"Content-Type": "application/json"})

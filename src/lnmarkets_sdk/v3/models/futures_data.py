@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, SkipValidation
 
 from lnmarkets_sdk.v3._internal.models import BaseConfig, FromToLimitParams
 
@@ -26,29 +26,33 @@ CandleResolution = Literal[
 class PriceBucket(BaseModel, BaseConfig):
     """Price bucket for ticker."""
 
-    ask_price: float | None = Field(
+    ask_price: SkipValidation[float] | None = Field(
         default=None, description="Current best ask/sell price available (in USD)"
     )
-    bid_price: float | None = Field(
+    bid_price: SkipValidation[float] | None = Field(
         default=None, description="Current best bid price available (in USD)"
     )
-    max_size: int = Field(..., description="Maximum order size (in BTC)")
-    min_size: int = Field(..., description="Minimum order size (in BTC)")
+    max_size: SkipValidation[int] = Field(
+        ..., description="Maximum order size (in BTC)"
+    )
+    min_size: SkipValidation[int] = Field(
+        ..., description="Minimum order size (in BTC)"
+    )
 
 
 class Ticker(BaseModel, BaseConfig):
     """Futures ticker data."""
 
-    funding_rate: float = Field(..., description="Current funding rate")
-    funding_time: str = Field(
+    funding_rate: SkipValidation[float] = Field(..., description="Current funding rate")
+    funding_time: SkipValidation[str] = Field(
         ...,
         description="ISO date string when the next funding rate will be established",
     )
-    index: float = Field(
+    index: SkipValidation[float] = Field(
         ...,
         description="Bitcoin price index aggregated from multiple exchanges (in USD)",
     )
-    last_price: float = Field(
+    last_price: SkipValidation[float] = Field(
         ..., description="Last executed trade price on the platform (in USD)"
     )
     prices: list[PriceBucket] = Field(
@@ -59,20 +63,20 @@ class Ticker(BaseModel, BaseConfig):
 class Candle(BaseModel, BaseConfig):
     """OHLC candlestick data."""
 
-    close: float = Field(..., description="Closing price")
-    high: float = Field(..., description="Highest price")
-    low: float = Field(..., description="Lowest price")
-    open: float = Field(..., description="Opening price")
-    time: str = Field(..., description="Timestamp in ISO format")
-    volume: float = Field(..., description="Trading volume")
+    close: SkipValidation[float] = Field(..., description="Closing price")
+    high: SkipValidation[float] = Field(..., description="Highest price")
+    low: SkipValidation[float] = Field(..., description="Lowest price")
+    open: SkipValidation[float] = Field(..., description="Opening price")
+    time: SkipValidation[str] = Field(..., description="Timestamp in ISO format")
+    volume: SkipValidation[float] = Field(..., description="Trading volume")
 
 
 class UserInfo(BaseModel, BaseConfig):
     """User leaderboard info."""
 
-    direction: int
-    pl: float
-    username: str
+    direction: SkipValidation[int]
+    pl: SkipValidation[float]
+    username: SkipValidation[str]
 
 
 class Leaderboard(BaseModel, BaseConfig):
