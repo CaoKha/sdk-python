@@ -133,7 +133,7 @@ client.synthetic_usd.new_swap()   # 🔒
 
 ## API Reference
 
-For full API documentation, see: [LNM API Documentation](https://docs.lnmarkets.com/)
+For full API documentation, see: [LNM API v3 Documentation](https://api.lnmarkets.com/v3)
 
 ## Contributing
 
