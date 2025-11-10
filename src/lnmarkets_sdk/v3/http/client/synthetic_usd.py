@@ -19,7 +19,16 @@ class SyntheticUSDClient:
         self._client = client
 
     async def get_best_price(self):
-        """Get best price for USD swaps."""
+        """
+        Get best price for USD swaps.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            price = await client.synthetic_usd.get_best_price()
+            print(f"Ask: {price.ask_price}, Bid: {price.bid_price}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/synthetic-usd/best-price",
@@ -28,7 +37,20 @@ class SyntheticUSDClient:
         )
 
     async def get_swaps(self, params: GetSwapsParams | None = None):
-        """Get swap history."""
+        """
+        Get swap history.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.synthetic_usd import GetSwapsParams
+
+        async with LNMClient(config) as client:
+            params = GetSwapsParams(limit=10)
+            swaps = await client.synthetic_usd.get_swaps(params)
+            for swap in swaps:
+                print(f"Swap: {swap.in_asset} -> {swap.out_asset}")
+        ```
+        """
         return await self._client.request(
             "GET",
             "/synthetic-usd/swaps",
@@ -38,7 +60,23 @@ class SyntheticUSDClient:
         )
 
     async def new_swap(self, params: NewSwapParams):
-        """Create a new USD swap."""
+        """
+        Create a new USD swap.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.synthetic_usd import NewSwapParams
+
+        async with LNMClient(config) as client:
+            params = NewSwapParams(
+                in_amount=100,
+                in_asset="USD",
+                out_asset="BTC"
+            )
+            swap = await client.synthetic_usd.new_swap(params)
+            print(f"Received: {swap.out_amount} {swap.out_asset}")
+        ```
+        """
         return await self._client.request(
             "POST",
             "/synthetic-usd/swap",

@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, SkipValidation
 
 from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig, FromToLimitParams
 
@@ -10,6 +10,7 @@ class FuturesCrossOrderSideQuantity(BaseModel, BaseConfig):
         ..., description="Trade side: b (buy/long) or s (sell/short)"
     )
     quantity: int = Field(..., gt=0, description="Quantity of the position")
+    client_id: str
 
 
 class FuturesCrossOrderLimit(FuturesCrossOrderSideQuantity):
@@ -25,71 +26,82 @@ class FuturesCrossOrderMarket(FuturesCrossOrderSideQuantity):
 
 
 class FuturesCrossOpenOrder(BaseModel, BaseConfig):
-    canceled: Literal[False] = False
+    canceled: SkipValidation[Literal[False]] = False
     canceled_at: None = None
-    created_at: str
-    filled: Literal[False] = False
+    created_at: SkipValidation[str]
+    filled: SkipValidation[bool] = False
     filled_at: None = None
-    id: UUID
-    open: Literal[True] = True
-    price: float
-    quantity: float
-    side: Literal["b", "s"]
-    trading_fee: float
-    type: Literal["limit"]
+    id: SkipValidation[UUID]
+    open: SkipValidation[bool] = True
+    price: SkipValidation[float]
+    quantity: SkipValidation[float]
+    side: SkipValidation[Literal["b", "s"]]
+    trading_fee: SkipValidation[float]
+    type: SkipValidation[Literal["limit"]]
+    client_id: SkipValidation[str] | None = None
 
 
 class FuturesCrossFilledOrder(BaseModel, BaseConfig):
-    canceled: Literal[False] = False
+    canceled: SkipValidation[bool] = False
     canceled_at: None = None
-    created_at: str
-    filled: Literal[True] = True
-    filled_at: str
-    id: UUID
-    open: Literal[False] = False
-    price: float
-    quantity: float
-    side: Literal["b", "s"]
-    trading_fee: float
-    type: Literal["limit", "liquidation", "market"]
+    created_at: SkipValidation[str]
+    filled: SkipValidation[bool] = True
+    filled_at: SkipValidation[str] | None = Field(
+        default=None, description="Timestamp when the order was filled"
+    )
+    id: SkipValidation[UUID]
+    open: SkipValidation[bool] = False
+    price: SkipValidation[float]
+    quantity: SkipValidation[float]
+    side: SkipValidation[Literal["b", "s"]]
+    trading_fee: SkipValidation[float]
+    type: SkipValidation[Literal["limit", "liquidation", "market"]]
+    client_id: SkipValidation[str] | None = Field(default=None, description="Client ID")
 
 
 class FuturesCrossCanceledOrder(BaseModel, BaseConfig):
-    canceled: Literal[True] = True
-    canceled_at: str
-    created_at: str
-    filled: Literal[False] = False
+    canceled: SkipValidation[bool] = True
+    canceled_at: SkipValidation[str] | None
+    created_at: SkipValidation[str]
+    filled: SkipValidation[bool] = False
     filled_at: None = None
-    id: UUID
-    open: Literal[False] = False
-    price: float
-    quantity: float
-    side: Literal["b", "s"]
-    trading_fee: float
-    type: Literal["limit"]
+    id: SkipValidation[UUID]
+    open: SkipValidation[bool] = False
+    price: SkipValidation[float]
+    quantity: SkipValidation[float]
+    side: SkipValidation[Literal["b", "s"]]
+    trading_fee: SkipValidation[float]
+    type: SkipValidation[Literal["limit"]]
+    client_id: SkipValidation[str] | None = Field(default=None, description="Client ID")
 
 
 class FuturesCrossPosition(BaseModel, BaseConfig):
-    delta_pl: float = Field(..., description="Delta P&L")
-    entry_price: float | None = Field(default=None, description="Entry price")
-    funding_fees: float = Field(..., description="Funding fees")
-    id: UUID = Field(..., description="Position ID")
-    initial_margin: float = Field(..., description="Initial margin")
-    leverage: int = Field(..., gt=0, description="Leverage")
-    liquidation: float | None = Field(default=None, description="Liquidation price")
-    maintenance_margin: float = Field(..., description="Maintenance margin")
-    margin: float = Field(..., description="Current margin")
-    quantity: float = Field(..., description="Position quantity")
-    running_margin: float = Field(..., description="Running margin")
-    total_pl: float = Field(..., description="Total P&L")
-    trading_fees: float = Field(..., description="Trading fees")
-    updated_at: str = Field(..., description="Last update timestamp")
+    delta_pl: SkipValidation[float] = Field(..., description="Delta P&L")
+    entry_price: SkipValidation[float] | None = Field(
+        default=None, description="Entry price"
+    )
+    funding_fees: SkipValidation[float] = Field(..., description="Funding fees")
+    id: SkipValidation[UUID] = Field(..., description="Position ID")
+    initial_margin: SkipValidation[float] = Field(..., description="Initial margin")
+    leverage: SkipValidation[int] = Field(..., gt=0, description="Leverage")
+    liquidation: SkipValidation[float] | None = Field(
+        default=None, description="Liquidation price"
+    )
+    maintenance_margin: SkipValidation[float] = Field(
+        ..., description="Maintenance margin"
+    )
+    margin: SkipValidation[float] = Field(..., description="Current margin")
+    quantity: SkipValidation[float] = Field(..., description="Position quantity")
+    running_margin: SkipValidation[float] = Field(..., description="Running margin")
+    total_pl: SkipValidation[float] = Field(..., description="Total P&L")
+    trading_fees: SkipValidation[float] = Field(..., description="Trading fees")
+    updated_at: SkipValidation[str] = Field(..., description="Last update timestamp")
 
 
 class FuturesCrossTransfer(BaseModel, BaseConfig):
-    amount: float
-    id: UUID
-    time: str
+    amount: SkipValidation[float]
+    id: SkipValidation[UUID]
+    time: SkipValidation[str]
 
 
 class DepositParams(BaseModel, BaseConfig):

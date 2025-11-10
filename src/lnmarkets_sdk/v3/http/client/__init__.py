@@ -27,30 +27,40 @@ class LNMClient:
         Initialize the LN Markets client.
 
         Args:
-            config: Client configuration. If None, will use environment variables.
+            config: Client configuration
 
         Example:
-        >>> from src.lnmarkets_sdk.v3.client import LNMClient
-        >>> from src.lnmarkets_sdk.v3.types.api.base import APIClientConfig, APIAuthContext
-        >>>
-        >>> config = APIClientConfig(
-        ...     authentication=APIAuthContext(
-        ...         key="your-key",
-        ...         secret="your-secret",
-        ...         passphrase="your-passphrase",
-        ...     ),
-        ...     network="mainnet",
-        ... )
-        >>>
-        >>> async with LNMClient(config) as client:
-        ...     # Get account info
-        ...     account = await client.account.get_account()
-        ...
-        ...     # Get market ticker
-        ...     ticker = await client.futures.get_ticker()
-        ...
-        ...     # Place a futures order
-        ...     order = await client.futures.isolated.new_trade(params)
+        ```python
+        from lnmarkets_sdk.v3.http.client import LNMClient, APIClientConfig, APIAuthContext
+        from lnmarkets_sdk.v3.models.futures_isolated import FuturesOrder
+
+        config = APIClientConfig(
+            authentication=APIAuthContext(
+                key="your-key",
+                secret="your-secret",
+                passphrase="your-passphrase",
+            ),
+            network="mainnet",
+            timeout=30,
+        )
+
+        async with LNMClient(config) as client:
+            # Get account info
+            account = await client.account.get_account()
+
+            # Get market ticker
+            ticker = await client.futures.get_ticker()
+
+            # Place a futures order
+            params = FuturesOrder(
+                type="l",  # limit order
+                side="b",  # buy
+                price=100_000,
+                quantity=1,
+                leverage=100,
+            )
+            order = await client.futures.isolated.new_trade(params)
+        ```
         """
         if config is None:
             config = APIClientConfig()
