@@ -407,16 +407,16 @@ class TestFuturesIsolatedIntegration:
     async def test_new_trade(self):
         async with LNMClient(create_auth_config()) as client:
             params = FuturesOrder(
-                type="l",  # limit order
-                side="b",  # buy
+                type="limit",  # limit order
+                side="buy",  # buy
                 price=100_000,
                 quantity=1,
                 leverage=100,
             )
             trade = await client.futures.isolated.new_trade(params)
             assert trade.id is not None
-            assert trade.side == "b"
-            assert trade.type == "l"
+            assert trade.side == "buy"
+            assert trade.type == "limit"
             assert trade.leverage == 100
             assert trade.canceled is False
             assert trade.closed is False
@@ -446,7 +446,7 @@ class TestFuturesIsolatedIntegration:
                 assert open_trade.canceled is False
                 assert open_trade.closed is False
                 assert open_trade.running is False
-                assert open_trade.type == "l"
+                assert open_trade.type == "limit"
                 assert open_trade.price > 0
                 assert open_trade.quantity > 0
                 assert open_trade.leverage > 0
@@ -497,8 +497,8 @@ class TestFuturesIsolatedIntegration:
         async with LNMClient(create_auth_config()) as client:
             # Create a trade first
             params = FuturesOrder(
-                type="l",
-                side="b",
+                type="limit",
+                side="buy",
                 price=100_000,
                 quantity=1,
                 leverage=100,
@@ -533,8 +533,8 @@ class TestFuturesIsolatedIntegration:
         async with LNMClient(create_auth_config()) as client:
             # Create a running trade first (market order)
             params = FuturesOrder(
-                type="m",  # market order
-                side="b",
+                type="market",  # market order
+                side="buy",
                 quantity=1,
                 leverage=100,
             )
@@ -683,14 +683,14 @@ class TestFuturesCrossIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = FuturesCrossOrderLimit(
                 type="limit",
-                side="b",
+                side="buy",
                 price=100_000,
                 quantity=1,
                 client_id="test-order-123",
             )
             order = await client.futures.cross.new_order(params)
             assert order.id is not None
-            assert order.side == "b"
+            assert order.side == "buy"
             assert order.price == 100_000
             assert order.quantity == 1
             assert order.trading_fee >= 0
@@ -712,7 +712,7 @@ class TestFuturesCrossIntegration:
                 assert order.filled is False
                 assert order.price > 0
                 assert order.quantity > 0
-                assert order.side in ["b", "s"]
+                assert order.side in ["buy", "sell"]
                 assert order.type == "limit"
                 assert order.trading_fee >= 0
                 assert order.created_at is not None
@@ -734,7 +734,7 @@ class TestFuturesCrossIntegration:
                 assert order.open is False
                 assert order.price > 0
                 assert order.quantity > 0
-                assert order.side in ["b", "s"]
+                assert order.side in ["buy", "sell"]
                 assert order.type in ["limit", "liquidation", "market"]
                 assert order.trading_fee >= 0
                 assert order.created_at is not None
@@ -750,7 +750,7 @@ class TestFuturesCrossIntegration:
             # Create an order first
             params = FuturesCrossOrderLimit(
                 type="limit",
-                side="b",
+                side="buy",
                 price=100_000,
                 quantity=1,
                 client_id="test-cancel-123",
@@ -783,7 +783,7 @@ class TestFuturesCrossIntegration:
     )
     async def test_close_position(self):
         async with LNMClient(create_auth_config()) as client:
-            # Check if there's a position to close
+            # Check if there'sell a position to close
             position = await client.futures.cross.get_position()
             if position.quantity > 0:
                 result = await client.futures.cross.close()

@@ -7,8 +7,8 @@ from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig, FromToLimitParam
 
 class FuturesOrder(BaseModel, BaseConfig):
     leverage: float = Field(..., description="Leverage of the position")
-    side: Literal["b", "s"] = Field(
-        ..., description="Trade side: b (buy/long) or s (sell/short)"
+    side: Literal["buy", "sell"] = Field(
+        ..., description="Trade side: buy (long) or sell (short)"
     )
     stoploss: float | None = Field(
         default=None,
@@ -31,8 +31,8 @@ class FuturesOrder(BaseModel, BaseConfig):
     price: float | None = Field(
         default=None, gt=0, multiple_of=0.5, description="Price of the limit order"
     )
-    type: Literal["l", "m"] = Field(
-        ..., description="Trade type: l (limit) or m (market)"
+    type: Literal["limit", "market"] = Field(
+        ..., description="Trade type: limit (limit) or market (market)"
     )
     client_id: str | None = Field(
         default=None, description="Unique client ID for the trade"
@@ -42,10 +42,10 @@ class FuturesOrder(BaseModel, BaseConfig):
     def validate_schema(self):
         if (self.quantity is None) == (self.margin is None):
             raise ValueError("Exactly one of quantity or margin must be set")
-        if self.type == "l" and self.price is None:
-            raise ValueError("'price' is required when type='l'")
-        if self.type == "m" and self.price is not None:
-            raise ValueError("'price' must not be set when type='m'")
+        if self.type == "limit" and self.price is None:
+            raise ValueError("'price' is required when type='limit'")
+        if self.type == "market" and self.price is not None:
+            raise ValueError("'price' must not be set when type='market'")
         return self
 
 
@@ -70,11 +70,11 @@ class FuturesTrade(BaseModel, BaseConfig):
     price: SkipValidation[float]
     quantity: SkipValidation[float]
     running: SkipValidation[bool]
-    side: SkipValidation[Literal["b", "s"]]
+    side: SkipValidation[Literal["buy", "sell"]]
     stoploss: SkipValidation[float]
     sum_funding_fees: SkipValidation[float]
     takeprofit: SkipValidation[float]
-    type: SkipValidation[Literal["l", "m"]]
+    type: SkipValidation[Literal["limit", "market"]]
     client_id: SkipValidation[str] | None = None
 
 
@@ -84,7 +84,7 @@ class FuturesOpenTrade(FuturesTrade):
     closed_at: None = None
     filled_at: None = None
     running: SkipValidation[bool] = False
-    type: SkipValidation[Literal["l"]] = "l"
+    type: SkipValidation[Literal["limit"]] = "limit"
 
 
 class FuturesRunningTrade(FuturesTrade):
@@ -112,7 +112,7 @@ class FuturesCanceledTrade(FuturesTrade):
     filled_at: None = None
     open: SkipValidation[bool] = False
     running: SkipValidation[bool] = False
-    type: SkipValidation[Literal["l"]] = "l"
+    type: SkipValidation[Literal["limit"]] = "limit"
 
 
 class AddMarginParams(BaseModel, BaseConfig):

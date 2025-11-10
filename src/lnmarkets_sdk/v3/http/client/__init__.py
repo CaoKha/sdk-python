@@ -53,8 +53,8 @@ class LNMClient:
 
             # Place a futures order
             params = FuturesOrder(
-                type="l",  # limit order
-                side="b",  # buy
+                type="limit",  # limit order
+                side="buy",  # buy
                 price=100_000,
                 quantity=1,
                 leverage=100,

@@ -6,8 +6,8 @@ from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig, FromToLimitParam
 
 
 class FuturesCrossOrderSideQuantity(BaseModel, BaseConfig):
-    side: Literal["b", "s"] = Field(
-        ..., description="Trade side: b (buy/long) or s (sell/short)"
+    side: Literal["buy", "sell"] = Field(
+        ..., description="Trade side: buy (long) or sell (short)"
     )
     quantity: int = Field(..., gt=0, description="Quantity of the position")
     client_id: str
@@ -35,7 +35,7 @@ class FuturesCrossOpenOrder(BaseModel, BaseConfig):
     open: SkipValidation[bool] = True
     price: SkipValidation[float]
     quantity: SkipValidation[float]
-    side: SkipValidation[Literal["b", "s"]]
+    side: SkipValidation[Literal["buy", "sell"]]
     trading_fee: SkipValidation[float]
     type: SkipValidation[Literal["limit"]]
     client_id: SkipValidation[str] | None = None
@@ -53,7 +53,7 @@ class FuturesCrossFilledOrder(BaseModel, BaseConfig):
     open: SkipValidation[bool] = False
     price: SkipValidation[float]
     quantity: SkipValidation[float]
-    side: SkipValidation[Literal["b", "s"]]
+    side: SkipValidation[Literal["buy", "sell"]]
     trading_fee: SkipValidation[float]
     type: SkipValidation[Literal["limit", "liquidation", "market"]]
     client_id: SkipValidation[str] | None = Field(default=None, description="Client ID")
@@ -69,7 +69,7 @@ class FuturesCrossCanceledOrder(BaseModel, BaseConfig):
     open: SkipValidation[bool] = False
     price: SkipValidation[float]
     quantity: SkipValidation[float]
-    side: SkipValidation[Literal["b", "s"]]
+    side: SkipValidation[Literal["buy", "sell"]]
     trading_fee: SkipValidation[float]
     type: SkipValidation[Literal["limit"]]
     client_id: SkipValidation[str] | None = Field(default=None, description="Client ID")

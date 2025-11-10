@@ -116,7 +116,7 @@ async def example_authenticated_endpoints():
         print("\n--- Running Isolated Trades ---")
         print(f"Count: {len(running_trades)}")
         for trade in running_trades[:3]:  # Show first 3
-            side = "LONG" if trade.side == "b" else "SHORT"
+            side = "LONG" if trade.side == "buy" else "SHORT"
             print(
                 f"  {side} - Margin: {trade.margin} sats, Leverage: {trade.leverage}x, PL: {trade.pl} sats"
             )
@@ -139,7 +139,7 @@ async def example_authenticated_endpoints():
                 type="limit",
                 price=101000,
                 quantity=10,
-                side="s",
+                side="sell",
                 client_id="custom-ref-123",
             )
             new_order = await client.futures.cross.new_order(order_params)

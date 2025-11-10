@@ -41,7 +41,7 @@ class FuturesCrossClient:
         async with LNMClient(config) as client:
             params = FuturesCrossOrderLimit(
                 type="limit",
-                side="b",
+                side="buy",
                 price=100_000,
                 quantity=1,
                 client_id="my-order-123"
