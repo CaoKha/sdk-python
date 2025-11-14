@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from lnmarkets_sdk.v3.http.client import LNMClient
 
+from lnmarkets_sdk.v3._internal.models import PaginatedResponse
 from lnmarkets_sdk.v3.models.funding_fees import FundingFees
 from lnmarkets_sdk.v3.models.futures_cross import (
     CancelOrderParams,
@@ -107,9 +108,11 @@ class FuturesCrossClient:
 
         async with LNMClient(config) as client:
             params = GetFilledOrdersParams(limit=10)
-            orders = await client.futures.cross.get_filled_orders(params)
-            for order in orders:
+            response = await client.futures.cross.get_filled_orders(params)
+            for order in response.data:
                 print(f"Order ID: {order.id}, Type: {order.type}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -117,7 +120,7 @@ class FuturesCrossClient:
             "/futures/cross/orders/filled",
             params=params,
             credentials=True,
-            response_model=list[FuturesCrossFilledOrder],
+            response_model=PaginatedResponse[FuturesCrossFilledOrder],
         )
 
     async def close(
@@ -258,9 +261,11 @@ class FuturesCrossClient:
 
         async with LNMClient(config) as client:
             params = GetTransfersParams(limit=10)
-            transfers = await client.futures.cross.get_transfers(params)
-            for transfer in transfers:
+            response = await client.futures.cross.get_transfers(params)
+            for transfer in response.data:
                 print(f"Transfer: {transfer.id}, Amount: {transfer.amount}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -268,7 +273,7 @@ class FuturesCrossClient:
             "/futures/cross/transfers",
             params=params,
             credentials=True,
-            response_model=list[FuturesCrossTransfer],
+            response_model=PaginatedResponse[FuturesCrossTransfer],
         )
 
     async def get_funding_fees(self, params: GetCrossFundingFeesParams | None = None):
@@ -281,9 +286,11 @@ class FuturesCrossClient:
 
         async with LNMClient(config) as client:
             params = GetCrossFundingFeesParams(limit=10)
-            fees = await client.futures.cross.get_funding_fees(params)
-            for fee in fees:
+            response = await client.futures.cross.get_funding_fees(params)
+            for fee in response.data:
                 print(f"Fee: {fee.fee}, Time: {fee.time}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -291,5 +298,5 @@ class FuturesCrossClient:
             "/futures/cross/funding-fees",
             params=params,
             credentials=True,
-            response_model=list[FundingFees],
+            response_model=PaginatedResponse[FundingFees],
         )

@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from lnmarkets_sdk.v3.http.client import LNMClient
 
+from lnmarkets_sdk.v3._internal.models import PaginatedResponse
 from lnmarkets_sdk.v3.models.funding_fees import FundingFees
 from lnmarkets_sdk.v3.models.futures_isolated import (
     AddMarginParams,
@@ -105,9 +106,11 @@ class FuturesIsolatedClient:
 
         async with LNMClient(config) as client:
             params = GetClosedTradesParams(limit=10)
-            trades = await client.futures.isolated.get_closed_trades(params)
-            for trade in trades:
+            response = await client.futures.isolated.get_closed_trades(params)
+            for trade in response.data:
                 print(f"Trade ID: {trade.id}, P&L: {trade.pl}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -115,7 +118,7 @@ class FuturesIsolatedClient:
             "/futures/isolated/trades/closed",
             params=params,
             credentials=True,
-            response_model=list[FuturesClosedTrade | FuturesCanceledTrade],
+            response_model=PaginatedResponse[FuturesClosedTrade | FuturesCanceledTrade],
         )
 
     async def close(self, params: CloseTradeParams):
@@ -280,9 +283,11 @@ class FuturesIsolatedClient:
 
         async with LNMClient(config) as client:
             params = GetIsolatedFundingFeesParams(limit=10, trade_id=trade_id)
-            fees = await client.futures.isolated.get_funding_fees(params)
-            for fee in fees:
+            response = await client.futures.isolated.get_funding_fees(params)
+            for fee in response.data:
                 print(f"Fee: {fee.fee}, Time: {fee.time}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -290,5 +295,30 @@ class FuturesIsolatedClient:
             "/futures/isolated/funding-fees",
             params=params,
             credentials=True,
-            response_model=list[FundingFees],
+            response_model=PaginatedResponse[FundingFees],
+        )
+
+    async def get_canceled_trades(self, params: GetClosedTradesParams | None = None):
+        """
+        Get canceled isolated margin trades history.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.futures_isolated import GetClosedTradesParams
+
+        async with LNMClient(config) as client:
+            params = GetClosedTradesParams(limit=10)
+            response = await client.futures.isolated.get_canceled_trades(params)
+            for trade in response.data:
+                print(f"Trade ID: {trade.id}, Canceled: {trade.canceled}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
+        ```
+        """
+        return await self._client.request(
+            "GET",
+            "/futures/isolated/trades/canceled",
+            params=params,
+            credentials=True,
+            response_model=PaginatedResponse[FuturesCanceledTrade],
         )

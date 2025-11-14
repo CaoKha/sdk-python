@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 import httpx
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, SkipValidation, ValidationError
 from pydantic.alias_generators import to_camel
 from pydantic.types import UUID4
 
@@ -76,6 +76,18 @@ class APIHTTPException(APIException):
         self.response = response
 
 
+class PaginatedResponse[T](BaseModel, BaseConfig):
+    """Generic paginated response with data array and nextCursor."""
+
+    data: list[T] = Field(..., description="Array of items")
+    next_cursor: SkipValidation[str] | None = Field(
+        default=None,
+        serialization_alias="nextCursor",
+        validation_alias="nextCursor",
+        description="Cursor for fetching the next page, null if no more pages",
+    )
+
+
 class FromToLimitParams(BaseModel, BaseConfig):
     from_: str | None = Field(
         default=None,
@@ -84,8 +96,14 @@ class FromToLimitParams(BaseModel, BaseConfig):
         description="Start date as a string value in ISO format",
     )
     limit: int = Field(
-        default=100, ge=1, le=1000, description="Limit of items to return (max 1000)"
+        default=1000,
+        ge=1,
+        le=1000,
+        description="Limit of items to return (max 1000, default 1000)",
     )
     to: str | None = Field(
         default=None, description="End date as a string value in ISO format"
+    )
+    cursor: str | None = Field(
+        default=None, description="Pagination cursor for fetching next page"
     )

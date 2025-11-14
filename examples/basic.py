@@ -104,11 +104,13 @@ async def example_authenticated_endpoints():
         print(f"Address: {btc_address.address}")
 
         # Get lightning deposits (last 5)
-        deposits = await client.account.get_lightning_deposits(
+        deposits_response = await client.account.get_lightning_deposits(
             GetLightningDepositsParams(from_="1970-01-01T00:00:00.000Z", limit=5)
         )
-        print(f"\n--- Recent Lightning Deposits (Last {len(deposits)}) ---")
-        for deposit in deposits:
+        print(
+            f"\n--- Recent Lightning Deposits (Last {len(deposits_response.data)}) ---"
+        )
+        for deposit in deposits_response.data:
             print(f"Deposits {deposit.amount} sats at {deposit.created_at}")
 
         # Get running trades

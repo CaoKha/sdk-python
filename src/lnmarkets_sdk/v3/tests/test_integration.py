@@ -218,19 +218,19 @@ class TestAccountIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetLightningDepositsParams(limit=2)
             result = await client.account.get_lightning_deposits(params)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].id is not None
-                assert result[0].created_at is not None
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].id is not None
+                assert result.data[0].created_at is not None
                 # amount, comment, payment_hash, settled_at are optional
-                if result[0].amount is not None:
-                    assert result[0].amount > 0
-                if result[0].comment is not None:
-                    assert isinstance(result[0].comment, str)
-                if result[0].payment_hash is not None:
-                    assert isinstance(result[0].payment_hash, str)
-                if result[0].settled_at is not None:
-                    assert isinstance(result[0].settled_at, str)
+                if result.data[0].amount is not None:
+                    assert result.data[0].amount > 0
+                if result.data[0].comment is not None:
+                    assert isinstance(result.data[0].comment, str)
+                if result.data[0].payment_hash is not None:
+                    assert isinstance(result.data[0].payment_hash, str)
+                if result.data[0].settled_at is not None:
+                    assert isinstance(result.data[0].settled_at, str)
 
     @pytest.mark.skipif(
         not os.environ.get("V3_API_KEY"),
@@ -240,14 +240,14 @@ class TestAccountIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetLightningWithdrawalsParams(limit=2)
             result = await client.account.get_lightning_withdrawals(params)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].id is not None
-                assert result[0].created_at is not None
-                assert result[0].amount is not None
-                assert result[0].fee is not None
-                assert result[0].payment_hash is not None
-                assert result[0].status in ["failed", "processed", "processing"]
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].id is not None
+                assert result.data[0].created_at is not None
+                assert result.data[0].amount is not None
+                assert result.data[0].fee is not None
+                assert result.data[0].payment_hash is not None
+                assert result.data[0].status in ["failed", "processed", "processing"]
 
     @pytest.mark.skipif(
         not os.environ.get("V3_API_KEY"),
@@ -257,12 +257,12 @@ class TestAccountIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetInternalDepositsParams(limit=2)
             result = await client.account.get_internal_deposits(params)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].id is not None
-                assert result[0].created_at is not None
-                assert result[0].amount is not None
-                assert result[0].from_username is not None
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].id is not None
+                assert result.data[0].created_at is not None
+                assert result.data[0].amount is not None
+                assert result.data[0].from_username is not None
 
     @pytest.mark.skipif(
         not os.environ.get("V3_API_KEY"),
@@ -272,12 +272,12 @@ class TestAccountIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetInternalWithdrawalsParams(limit=2)
             result = await client.account.get_internal_withdrawals(params)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].id is not None
-                assert result[0].created_at is not None
-                assert result[0].amount is not None
-                assert result[0].to_username is not None
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].id is not None
+                assert result.data[0].created_at is not None
+                assert result.data[0].amount is not None
+                assert result.data[0].to_username is not None
 
     @pytest.mark.skipif(
         not os.environ.get("V3_API_KEY"),
@@ -288,16 +288,20 @@ class TestAccountIntegration:
             params = GetOnChainDepositsParams(limit=2)
             try:
                 result = await client.account.get_on_chain_deposits(params)
-                assert len(result) <= params.limit
-                if len(result) > 0:
-                    assert result[0].id is not None
-                    assert result[0].created_at is not None
-                    assert result[0].amount is not None
-                    assert result[0].confirmations is not None
-                    assert result[0].status in ["MEMPOOL", "CONFIRMED", "IRREVERSIBLE"]
-                    assert result[0].tx_id is not None
-                    if result[0].block_height is not None:
-                        assert result[0].block_height > 0
+                assert len(result.data) <= params.limit
+                if len(result.data) > 0:
+                    assert result.data[0].id is not None
+                    assert result.data[0].created_at is not None
+                    assert result.data[0].amount is not None
+                    assert result.data[0].confirmations is not None
+                    assert result.data[0].status in [
+                        "MEMPOOL",
+                        "CONFIRMED",
+                        "IRREVERSIBLE",
+                    ]
+                    assert result.data[0].tx_id is not None
+                    if result.data[0].block_height is not None:
+                        assert result.data[0].block_height > 0
             except Exception as e:
                 assert "HTTP 404: Not found" in str(e)
 
@@ -310,23 +314,23 @@ class TestAccountIntegration:
             params = GetOnChainWithdrawalsParams(limit=2)
             try:
                 result = await client.account.get_on_chain_withdrawals(params)
-                assert len(result) <= params.limit
-                if len(result) > 0:
-                    assert result[0].id is not None
-                    assert result[0].created_at is not None
-                    assert result[0].amount is not None
-                    assert result[0].address is not None
-                    assert result[0].status in [
+                assert len(result.data) <= params.limit
+                if len(result.data) > 0:
+                    assert result.data[0].id is not None
+                    assert result.data[0].created_at is not None
+                    assert result.data[0].amount is not None
+                    assert result.data[0].address is not None
+                    assert result.data[0].status in [
                         "canceled",
                         "pending",
                         "processed",
                         "processing",
                         "rejected",
                     ]
-                    if result[0].fee is not None:
-                        assert result[0].fee >= 0
-                    if result[0].tx_id is not None:
-                        assert isinstance(result[0].tx_id, str)
+                    if result.data[0].fee is not None:
+                        assert result.data[0].fee >= 0
+                    if result.data[0].tx_id is not None:
+                        assert isinstance(result.data[0].tx_id, str)
             except Exception as e:
                 assert "HTTP 404: Not found" in str(e)
 
@@ -372,27 +376,27 @@ class TestFuturesIntegration:
             params = GetCandlesParams(
                 from_="2023-05-23T09:52:57.863Z", range="1m", limit=1
             )
-            candles = await client.futures.get_candles(params)
-            assert isinstance(candles, list)
-            assert len(candles) > 0
-            assert candles[0].open > 0
-            assert candles[0].high > 0
-            assert candles[0].low > 0
-            assert candles[0].close > 0
-            assert candles[0].time is not None
-            assert candles[0].volume >= 0
+            result = await client.futures.get_candles(params)
+            assert isinstance(result.data, list)
+            assert len(result.data) > 0
+            assert result.data[0].open > 0
+            assert result.data[0].high > 0
+            assert result.data[0].low > 0
+            assert result.data[0].close > 0
+            assert result.data[0].time is not None
+            assert result.data[0].volume >= 0
 
     async def test_get_funding_settlements(self):
         async with LNMClient(create_public_config()) as client:
             params = GetFundingSettlementsParams(limit=5)
             result = await client.futures.get_funding_settlements(params)
-            assert isinstance(result, list)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].id is not None
-                assert result[0].time is not None
-                assert isinstance(result[0].funding_rate, float)
-                assert result[0].fixing_price > 0
+            assert isinstance(result.data, list)
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].id is not None
+                assert result.data[0].time is not None
+                assert isinstance(result.data[0].funding_rate, float)
+                assert result.data[0].fixing_price > 0
 
 
 @pytest.mark.asyncio
@@ -475,13 +479,11 @@ class TestFuturesIsolatedIntegration:
     async def test_get_closed_trades(self):
         async with LNMClient(create_auth_config()) as client:
             closed_params = GetClosedTradesParams(limit=5)
-            closed_trades = await client.futures.isolated.get_closed_trades(
-                closed_params
-            )
-            assert isinstance(closed_trades, list)
-            assert len(closed_trades) <= closed_params.limit
-            if len(closed_trades) > 0:
-                closed_trade = closed_trades[0]
+            result = await client.futures.isolated.get_closed_trades(closed_params)
+            assert isinstance(result.data, list)
+            assert len(result.data) <= closed_params.limit
+            if len(result.data) > 0:
+                closed_trade = result.data[0]
                 assert closed_trade.id is not None
                 assert closed_trade.closed is True
                 assert closed_trade.open is False
@@ -636,14 +638,14 @@ class TestFuturesIsolatedIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetIsolatedFundingFeesParams(limit=5)
             result = await client.futures.isolated.get_funding_fees(params)
-            assert isinstance(result, list)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].fee is not None
-                assert result[0].settlement_id is not None
-                assert result[0].time is not None
-                if result[0].trade_id is not None:
-                    assert result[0].trade_id is not None
+            assert isinstance(result.data, list)
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].fee is not None
+                assert result.data[0].settlement_id is not None
+                assert result.data[0].time is not None
+                if result.data[0].trade_id is not None:
+                    assert result.data[0].trade_id is not None
 
 
 @pytest.mark.asyncio
@@ -724,11 +726,11 @@ class TestFuturesCrossIntegration:
     async def test_get_filled_orders(self):
         async with LNMClient(create_auth_config()) as client:
             params = GetFilledOrdersParams(limit=5)
-            filled_orders = await client.futures.cross.get_filled_orders(params)
-            assert isinstance(filled_orders, list)
-            assert len(filled_orders) <= params.limit
-            if len(filled_orders) > 0:
-                order = filled_orders[0]
+            result = await client.futures.cross.get_filled_orders(params)
+            assert isinstance(result.data, list)
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                order = result.data[0]
                 assert order.id is not None
                 assert order.filled is True
                 assert order.open is False
@@ -841,12 +843,12 @@ class TestFuturesCrossIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetTransfersParams(limit=5)
             result = await client.futures.cross.get_transfers(params)
-            assert isinstance(result, list)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].id is not None
-                assert result[0].amount is not None
-                assert result[0].time is not None
+            assert isinstance(result.data, list)
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].id is not None
+                assert result.data[0].amount is not None
+                assert result.data[0].time is not None
 
     @pytest.mark.skipif(
         not os.environ.get("V3_API_KEY"),
@@ -856,14 +858,14 @@ class TestFuturesCrossIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetCrossFundingFeesParams(limit=5)
             result = await client.futures.cross.get_funding_fees(params)
-            assert isinstance(result, list)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].fee is not None
-                assert result[0].settlement_id is not None
-                assert result[0].time is not None
-                if result[0].trade_id is not None:
-                    assert result[0].trade_id is not None
+            assert isinstance(result.data, list)
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].fee is not None
+                assert result.data[0].settlement_id is not None
+                assert result.data[0].time is not None
+                if result.data[0].trade_id is not None:
+                    assert result.data[0].trade_id is not None
 
 
 @pytest.mark.asyncio
@@ -908,15 +910,15 @@ class TestSyntheticUSDIntegration:
         async with LNMClient(create_auth_config()) as client:
             params = GetSwapsParams(limit=5)
             result = await client.synthetic_usd.get_swaps(params)
-            assert isinstance(result, list)
-            assert len(result) <= params.limit
-            if len(result) > 0:
-                assert result[0].id is not None
-                assert result[0].created_at is not None
-                assert result[0].in_amount > 0
-                assert result[0].out_amount > 0
-                assert result[0].in_asset in ["BTC", "USD"]
-                assert result[0].out_asset in ["BTC", "USD"]
+            assert isinstance(result.data, list)
+            assert len(result.data) <= params.limit
+            if len(result.data) > 0:
+                assert result.data[0].id is not None
+                assert result.data[0].created_at is not None
+                assert result.data[0].in_amount > 0
+                assert result.data[0].out_amount > 0
+                assert result.data[0].in_asset in ["BTC", "USD"]
+                assert result.data[0].out_asset in ["BTC", "USD"]
 
     @pytest.mark.skipif(
         not os.environ.get("V3_API_KEY"),

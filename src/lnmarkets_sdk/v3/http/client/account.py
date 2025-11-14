@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from lnmarkets_sdk.v3.http.client import LNMClient
 
+from lnmarkets_sdk.v3._internal.models import PaginatedResponse
 from lnmarkets_sdk.v3.models.account import (
     Account,
     AddBitcoinAddressParams,
@@ -18,10 +19,12 @@ from lnmarkets_sdk.v3.models.account import (
     GetLightningDepositsResponse,
     GetLightningWithdrawalsParams,
     GetLightningWithdrawalsResponse,
+    GetNotificationsParams,
     GetOnChainDepositsParams,
     GetOnChainDepositsResponse,
     GetOnChainWithdrawalsParams,
     GetOnChainWithdrawalsResponse,
+    Notification,
     WithdrawInternalParams,
     WithdrawInternalResponse,
     WithdrawLightningParams,
@@ -202,9 +205,11 @@ class AccountClient:
 
         async with LNMClient(config) as client:
             params = GetLightningDepositsParams(limit=10, settled=True)
-            deposits = await client.account.get_lightning_deposits(params)
-            for deposit in deposits:
+            response = await client.account.get_lightning_deposits(params)
+            for deposit in response.data:
                 print(f"Deposit: {deposit.id}, Amount: {deposit.amount}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -212,7 +217,7 @@ class AccountClient:
             "/account/deposits/lightning",
             params=params,
             credentials=True,
-            response_model=list[GetLightningDepositsResponse],
+            response_model=PaginatedResponse[GetLightningDepositsResponse],
         )
 
     async def get_lightning_withdrawals(
@@ -230,9 +235,11 @@ class AccountClient:
                 limit=10,
                 status="processed"
             )
-            withdrawals = await client.account.get_lightning_withdrawals(params)
-            for withdrawal in withdrawals:
+            response = await client.account.get_lightning_withdrawals(params)
+            for withdrawal in response.data:
                 print(f"Withdrawal: {withdrawal.id}, Status: {withdrawal.status}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -240,7 +247,7 @@ class AccountClient:
             "/account/withdrawals/lightning",
             params=params,
             credentials=True,
-            response_model=list[GetLightningWithdrawalsResponse],
+            response_model=PaginatedResponse[GetLightningWithdrawalsResponse],
         )
 
     async def get_internal_deposits(
@@ -255,9 +262,11 @@ class AccountClient:
 
         async with LNMClient(config) as client:
             params = GetInternalDepositsParams(limit=10)
-            deposits = await client.account.get_internal_deposits(params)
-            for deposit in deposits:
+            response = await client.account.get_internal_deposits(params)
+            for deposit in response.data:
                 print(f"From: {deposit.from_username}, Amount: {deposit.amount}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -265,7 +274,7 @@ class AccountClient:
             "/account/deposits/internal",
             params=params,
             credentials=True,
-            response_model=list[GetInternalDepositsResponse],
+            response_model=PaginatedResponse[GetInternalDepositsResponse],
         )
 
     async def get_internal_withdrawals(
@@ -280,9 +289,11 @@ class AccountClient:
 
         async with LNMClient(config) as client:
             params = GetInternalWithdrawalsParams(limit=10)
-            withdrawals = await client.account.get_internal_withdrawals(params)
-            for withdrawal in withdrawals:
+            response = await client.account.get_internal_withdrawals(params)
+            for withdrawal in response.data:
                 print(f"To: {withdrawal.to_username}, Amount: {withdrawal.amount}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -290,7 +301,7 @@ class AccountClient:
             "/account/withdrawals/internal",
             params=params,
             credentials=True,
-            response_model=list[GetInternalWithdrawalsResponse],
+            response_model=PaginatedResponse[GetInternalWithdrawalsResponse],
         )
 
     async def get_on_chain_deposits(
@@ -308,17 +319,19 @@ class AccountClient:
                 limit=10,
                 status="CONFIRMED"
             )
-            deposits = await client.account.get_on_chain_deposits(params)
-            for deposit in deposits:
+            response = await client.account.get_on_chain_deposits(params)
+            for deposit in response.data:
                 print(f"TX ID: {deposit.tx_id}, Status: {deposit.status}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
             "GET",
-            "/account/deposits/bitcoin",
+            "/account/deposits/on-chain",
             params=params,
             credentials=True,
-            response_model=list[GetOnChainDepositsResponse],
+            response_model=PaginatedResponse[GetOnChainDepositsResponse],
         )
 
     async def get_on_chain_withdrawals(
@@ -336,15 +349,42 @@ class AccountClient:
                 limit=10,
                 status="processed"
             )
-            withdrawals = await client.account.get_on_chain_withdrawals(params)
-            for withdrawal in withdrawals:
+            response = await client.account.get_on_chain_withdrawals(params)
+            for withdrawal in response.data:
                 print(f"Address: {withdrawal.address}, Status: {withdrawal.status}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
             "GET",
-            "/account/withdrawals/bitcoin",
+            "/account/withdrawals/on-chain",
             params=params,
             credentials=True,
-            response_model=list[GetOnChainWithdrawalsResponse],
+            response_model=PaginatedResponse[GetOnChainWithdrawalsResponse],
+        )
+
+    async def get_notifications(self, params: GetNotificationsParams | None = None):
+        """
+        Get account notifications.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.v3.models.account import GetNotificationsParams
+
+        async with LNMClient(config) as client:
+            params = GetNotificationsParams(limit=10)
+            response = await client.account.get_notifications(params)
+            for notification in response.data:
+                print(f"Notification: {notification.message}, Read: {notification.read}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
+        ```
+        """
+        return await self._client.request(
+            "GET",
+            "/account/notifications",
+            params=params,
+            credentials=True,
+            response_model=PaginatedResponse[Notification],
         )

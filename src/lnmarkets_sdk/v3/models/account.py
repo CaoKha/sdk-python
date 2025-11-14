@@ -275,3 +275,24 @@ class GetOnChainWithdrawalsParams(FromToLimitParams):
     status: (
         Literal["canceled", "pending", "processed", "processing", "rejected"] | None
     ) = Field(default=None, description="Filter by withdrawal status")
+
+
+class Notification(BaseModel, BaseConfig):
+    """Account notification model."""
+
+    id: SkipValidation[UUID] = Field(
+        ..., description="Unique identifier for the notification"
+    )
+    created_at: SkipValidation[str] = Field(
+        ..., description="Timestamp when the notification was created"
+    )
+    message: SkipValidation[str] = Field(..., description="Notification message")
+    read: SkipValidation[bool] = Field(
+        default=False, description="Whether the notification has been read"
+    )
+    type: SkipValidation[str] | None = Field(
+        default=None, description="Type of notification"
+    )
+
+
+class GetNotificationsParams(FromToLimitParams): ...

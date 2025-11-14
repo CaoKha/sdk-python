@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from lnmarkets_sdk.v3.http.client import LNMClient
 
+from lnmarkets_sdk.v3._internal.models import PaginatedResponse
 from lnmarkets_sdk.v3.models.synthetic_usd import (
     BestPriceResponse,
     CreateSwapOutput,
@@ -46,9 +47,11 @@ class SyntheticUSDClient:
 
         async with LNMClient(config) as client:
             params = GetSwapsParams(limit=10)
-            swaps = await client.synthetic_usd.get_swaps(params)
-            for swap in swaps:
+            response = await client.synthetic_usd.get_swaps(params)
+            for swap in response.data:
                 print(f"Swap: {swap.in_asset} -> {swap.out_asset}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -56,7 +59,7 @@ class SyntheticUSDClient:
             "/synthetic-usd/swaps",
             params=params,
             credentials=True,
-            response_model=list[Swap],
+            response_model=PaginatedResponse[Swap],
         )
 
     async def new_swap(self, params: NewSwapParams):

@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from lnmarkets_sdk.v3.http.client import LNMClient
 
+from lnmarkets_sdk.v3._internal.models import PaginatedResponse
 from lnmarkets_sdk.v3.models.funding_fees import FundingSettlement
 from lnmarkets_sdk.v3.models.futures_data import (
     Candle,
@@ -81,9 +82,11 @@ class FuturesClient:
                 limit=100,
                 to="2023-05-24T09:52:57.863Z"
             )
-            candles = await client.futures.get_candles(params)
-            for candle in candles:
+            response = await client.futures.get_candles(params)
+            for candle in response.data:
                 print(f"Time: {candle.time}, OHLC: {candle.open}/{candle.high}/{candle.low}/{candle.close}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -91,7 +94,7 @@ class FuturesClient:
             "/futures/candles",
             params=params,
             credentials=False,
-            response_model=list[Candle],
+            response_model=PaginatedResponse[Candle],
         )
 
     async def get_funding_settlements(
@@ -106,9 +109,11 @@ class FuturesClient:
 
         async with LNMClient(config) as client:
             params = GetFundingSettlementsParams(limit=10)
-            settlements = await client.futures.get_funding_settlements(params)
-            for settlement in settlements:
+            response = await client.futures.get_funding_settlements(params)
+            for settlement in response.data:
                 print(f"Rate: {settlement.funding_rate}, Price: {settlement.fixing_price}")
+            if response.next_cursor:
+                print(f"Next cursor: {response.next_cursor}")
         ```
         """
         return await self._client.request(
@@ -116,5 +121,5 @@ class FuturesClient:
             "/futures/funding-settlements",
             params=params,
             credentials=False,
-            response_model=list[FundingSettlement],
+            response_model=PaginatedResponse[FundingSettlement],
         )

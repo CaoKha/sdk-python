@@ -101,10 +101,16 @@ class GetCandlesParams(BaseModel, BaseConfig):
         default="1m", description="Resolution of the OHLC candle"
     )
     limit: int = Field(
-        default=100, ge=1, le=1000, description="Number of entries to return"
+        default=1000,
+        ge=1,
+        le=1000,
+        description="Number of entries to return (max 1000, default 1000)",
     )
     to: str | None = Field(
         default=None, description="End date as a string value in ISO format"
+    )
+    cursor: str | None = Field(
+        default=None, description="Pagination cursor for fetching next page"
     )
 
 
