@@ -135,5 +135,18 @@ class LNMClient:
         """Ping the API to check connectivity."""
         return await self.request_raw("GET", "/ping", credentials=False)
 
+    async def time(self) -> str:
+        """
+        Get server time.
+
+        Example:
+        ```python
+        async with LNMClient(config) as client:
+            time_response = await client.time()
+            print(f"Server time: {time_response}")
+        ```
+        """
+        return await self.request_raw("GET", "/time", credentials=False)
+
 
 __all__ = ["APIAuthContext", "APIClientConfig", "LNMClient"]

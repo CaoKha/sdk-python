@@ -82,8 +82,6 @@ class PaginatedResponse[T](BaseModel, BaseConfig):
     data: list[T] = Field(..., description="Array of items")
     next_cursor: SkipValidation[str] | None = Field(
         default=None,
-        serialization_alias="nextCursor",
-        validation_alias="nextCursor",
         description="Cursor for fetching the next page, null if no more pages",
     )
 

@@ -48,4 +48,13 @@ class BestPriceResponse(BaseModel, BaseConfig):
     bid_price: SkipValidation[float] = Field(..., description="Best bid price")
 
 
+class GetSwapsResponse(BaseModel, BaseConfig):
+    """Paginated swaps response."""
+
+    data: list[Swap] = Field(..., description="List of swaps")
+    next_cursor: SkipValidation[str] | None = Field(
+        default=None, description="Cursor for pagination"
+    )
+
+
 class GetSwapsParams(FromToLimitParams): ...

@@ -12,19 +12,19 @@ from lnmarkets_sdk.v3.models.account import (
     DepositLightningResponse,
     GetBitcoinAddressResponse,
     GetInternalDepositsParams,
-    GetInternalDepositsResponse,
     GetInternalWithdrawalsParams,
-    GetInternalWithdrawalsResponse,
     GetLightningDepositsParams,
-    GetLightningDepositsResponse,
     GetLightningWithdrawalsParams,
-    GetLightningWithdrawalsResponse,
     GetNotificationsParams,
     GetOnChainDepositsParams,
-    GetOnChainDepositsResponse,
     GetOnChainWithdrawalsParams,
-    GetOnChainWithdrawalsResponse,
+    InternalDeposit,
+    InternalWithdrawal,
+    LightningDeposits,
+    LightningWithdrawal,
     Notification,
+    OnChainDeposit,
+    OnChainWithdrawal,
     WithdrawInternalParams,
     WithdrawInternalResponse,
     WithdrawLightningParams,
@@ -217,7 +217,7 @@ class AccountClient:
             "/account/deposits/lightning",
             params=params,
             credentials=True,
-            response_model=PaginatedResponse[GetLightningDepositsResponse],
+            response_model=PaginatedResponse[LightningDeposits],
         )
 
     async def get_lightning_withdrawals(
@@ -247,7 +247,7 @@ class AccountClient:
             "/account/withdrawals/lightning",
             params=params,
             credentials=True,
-            response_model=PaginatedResponse[GetLightningWithdrawalsResponse],
+            response_model=PaginatedResponse[LightningWithdrawal],
         )
 
     async def get_internal_deposits(
@@ -274,7 +274,7 @@ class AccountClient:
             "/account/deposits/internal",
             params=params,
             credentials=True,
-            response_model=PaginatedResponse[GetInternalDepositsResponse],
+            response_model=PaginatedResponse[InternalDeposit],
         )
 
     async def get_internal_withdrawals(
@@ -301,7 +301,7 @@ class AccountClient:
             "/account/withdrawals/internal",
             params=params,
             credentials=True,
-            response_model=PaginatedResponse[GetInternalWithdrawalsResponse],
+            response_model=PaginatedResponse[InternalWithdrawal],
         )
 
     async def get_on_chain_deposits(
@@ -331,7 +331,7 @@ class AccountClient:
             "/account/deposits/on-chain",
             params=params,
             credentials=True,
-            response_model=PaginatedResponse[GetOnChainDepositsResponse],
+            response_model=PaginatedResponse[OnChainDeposit],
         )
 
     async def get_on_chain_withdrawals(
@@ -361,7 +361,7 @@ class AccountClient:
             "/account/withdrawals/on-chain",
             params=params,
             credentials=True,
-            response_model=PaginatedResponse[GetOnChainWithdrawalsResponse],
+            response_model=PaginatedResponse[OnChainWithdrawal],
         )
 
     async def get_notifications(self, params: GetNotificationsParams | None = None):

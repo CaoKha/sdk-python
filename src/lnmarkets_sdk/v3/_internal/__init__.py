@@ -1,6 +1,7 @@
 """Internal HTTP client - not part of public API."""
 
 import json
+import re
 from collections.abc import Mapping
 from urllib.parse import urlencode
 
@@ -63,6 +64,8 @@ class BaseClient:
             if params_dict:
                 if method == "GET":
                     data = f"?{urlencode(params_dict)}"
+                    data = re.sub(r"=(True)", "=true", data)
+                    data = re.sub(r"=(False)", "=false", data)
                 else:
                     data = json.dumps(params_dict, separators=(",", ":"))
                     headers.update({"Content-Type": "application/json"})
