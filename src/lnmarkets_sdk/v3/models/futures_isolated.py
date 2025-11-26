@@ -3,7 +3,6 @@ from typing import Literal
 from pydantic import BaseModel, Field, SkipValidation, model_validator
 
 from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig, FromToLimitParams
-from lnmarkets_sdk.v3.models.funding_fees import FundingFees
 
 
 class FuturesOrder(BaseModel, BaseConfig):
@@ -144,27 +143,7 @@ class UpdateTakeprofitParams(BaseModel, BaseConfig):
     takeprofit: float = Field(..., description="New take profit price level")
 
 
-class GetClosedTradesResponse(BaseModel, BaseConfig):
-    """Paginated closed trades response."""
-
-    data: list[FuturesClosedTrade | FuturesCanceledTrade] = Field(
-        ..., description="List of closed or canceled trades"
-    )
-    next_cursor: SkipValidation[str] | None = Field(
-        default=None, description="Cursor for pagination"
-    )
-
-
 class GetClosedTradesParams(FromToLimitParams): ...
-
-
-class GetIsolatedFundingFeesResponse(BaseModel, BaseConfig):
-    """Paginated isolated funding fees response."""
-
-    data: list[FundingFees] = Field(..., description="List of funding fees")
-    next_cursor: SkipValidation[str] | None = Field(
-        default=None, description="Cursor for pagination"
-    )
 
 
 class GetIsolatedFundingFeesParams(FromToLimitParams):

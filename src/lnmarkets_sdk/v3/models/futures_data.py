@@ -3,7 +3,6 @@ from typing import Literal
 from pydantic import BaseModel, Field, SkipValidation
 
 from lnmarkets_sdk.v3._internal.models import BaseConfig, FromToLimitParams
-from lnmarkets_sdk.v3.models.funding_fees import FundingSettlement
 
 CandleResolution = Literal[
     "1m",
@@ -72,15 +71,6 @@ class Candle(BaseModel, BaseConfig):
     volume: SkipValidation[float] = Field(..., description="Trading volume")
 
 
-class GetCandlesResponse(BaseModel, BaseConfig):
-    """Get candles response."""
-
-    data: list[Candle] = Field(..., description="List of ohlc candles")
-    next_cursor: SkipValidation[str] | None = Field(
-        default=None, description="Cursor for pagination"
-    )
-
-
 class UserInfo(BaseModel, BaseConfig):
     """User leaderboard info."""
 
@@ -121,17 +111,6 @@ class GetCandlesParams(BaseModel, BaseConfig):
     )
     cursor: str | None = Field(
         default=None, description="Pagination cursor for fetching next page"
-    )
-
-
-class GetFundingSettlementsResponse(BaseModel, BaseConfig):
-    """Paginated funding settlements response."""
-
-    data: list[FundingSettlement] = Field(
-        ..., description="List of funding settlements"
-    )
-    next_cursor: SkipValidation[str] | None = Field(
-        default=None, description="Cursor for pagination"
     )
 
 

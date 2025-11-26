@@ -64,9 +64,6 @@ class InternalDeposit(BaseModel, BaseConfig):
     id: SkipValidation[UUID] = Field(
         ..., description="Unique identifier for this deposit"
     )
-    success: SkipValidation[bool] | None = Field(
-        default=None, description="Whether the deposit was successful"
-    )
 
 
 class InternalWithdrawal(BaseModel, BaseConfig):
@@ -80,9 +77,6 @@ class InternalWithdrawal(BaseModel, BaseConfig):
     )
     id: SkipValidation[UUID] = Field(
         ..., description="Unique identifier for this transfer"
-    )
-    success: SkipValidation[bool] | None = Field(
-        default=None, description="Whether the withdrawal was successful"
     )
     to_username: SkipValidation[str] = Field(
         ..., description="Username of the recipient"
@@ -119,9 +113,6 @@ class LightningWithdrawal(BaseModel, BaseConfig):
     created_at: SkipValidation[str] = Field(
         ..., description="Timestamp when the withdrawal was created"
     )
-    destination: SkipValidation[str] | None = Field(
-        default=None, description="Destination of the withdrawal"
-    )
     fee: SkipValidation[float] = Field(
         ..., description="Fee of the withdrawal (in satoshis)"
     )
@@ -156,29 +147,6 @@ class OnChainWithdrawal(BaseModel, BaseConfig):
     tx_id: SkipValidation[str] | None = Field(
         default=None, description="Transaction ID of the withdrawal"
     )
-
-
-class InternalTransfer(BaseModel, BaseConfig):
-    amount: SkipValidation[float]
-    created_at: SkipValidation[str]
-    from_uid: SkipValidation[UUID]
-    from_username: SkipValidation[str]
-    id: SkipValidation[UUID]
-    settled_at: SkipValidation[str] | None
-    success: SkipValidation[bool] | None
-    to_uid: SkipValidation[UUID]
-    to_username: SkipValidation[str]
-
-
-class PendingOnChainWithdrawalRequest(BaseModel, BaseConfig):
-    address: SkipValidation[str]
-    amount: SkipValidation[float]
-    created_at: SkipValidation[str]
-    fee: SkipValidation[float] | None
-    id: SkipValidation[UUID]
-    status: SkipValidation[Literal["pending"]]
-    tx_id: None = None
-    updated_at: SkipValidation[str]
 
 
 class DepositLightningResponse(BaseModel, BaseConfig):
