@@ -43,6 +43,6 @@ jobs:
           uv run --isolated --python=3.13 pytest
           uv run --isolated --python=3.14 pytest
         env:
-          V3_API_KEY: ${{ secrets.V3_API_KEY }}
-          V3_API_KEY_SECRET: ${{ secrets.V3_API_KEY_SECRET }}
-          V3_API_KEY_PASSPHRASE: ${{ secrets.V3_API_KEY_PASSPHRASE }}
+          TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
+          TEST_API_SECRET: ${{ secrets.TEST_API_SECRET }}
+          TEST_API_PASSPHRASE: ${{ secrets.TEST_API_PASSPHRASE }}

@@ -25,7 +25,9 @@ class Account(BaseModel, BaseConfig):
     )
 
 
-class GetOnChainDepositsResponse(BaseModel, BaseConfig):
+class OnChainDeposit(BaseModel, BaseConfig):
+    """On-chain deposit item."""
+
     amount: SkipValidation[float] = Field(..., description="The amount of the deposit")
     block_height: SkipValidation[int] | None = Field(
         default=None, description="The block height of the deposit"
@@ -47,7 +49,9 @@ class GetOnChainDepositsResponse(BaseModel, BaseConfig):
     )
 
 
-class GetInternalDepositsResponse(BaseModel, BaseConfig):
+class InternalDeposit(BaseModel, BaseConfig):
+    """Internal deposit item."""
+
     amount: SkipValidation[float] = Field(
         ..., description="Amount of the deposit (in satoshis)"
     )
@@ -62,7 +66,9 @@ class GetInternalDepositsResponse(BaseModel, BaseConfig):
     )
 
 
-class GetInternalWithdrawalsResponse(BaseModel, BaseConfig):
+class InternalWithdrawal(BaseModel, BaseConfig):
+    """Internal withdrawal item."""
+
     amount: SkipValidation[float] = Field(
         ..., description="Amount of the transfer (in satoshis)"
     )
@@ -77,7 +83,7 @@ class GetInternalWithdrawalsResponse(BaseModel, BaseConfig):
     )
 
 
-class GetLightningDepositsResponse(BaseModel, BaseConfig):
+class LightningDeposits(BaseModel, BaseConfig):
     amount: SkipValidation[float] | None = Field(
         None, description="Amount of the deposit (in satoshis)"
     )
@@ -98,7 +104,9 @@ class GetLightningDepositsResponse(BaseModel, BaseConfig):
     )
 
 
-class GetLightningWithdrawalsResponse(BaseModel, BaseConfig):
+class LightningWithdrawal(BaseModel, BaseConfig):
+    """Lightning withdrawal item."""
+
     amount: SkipValidation[float] = Field(
         ..., description="Amount of the withdrawal (in satoshis)"
     )
@@ -119,7 +127,9 @@ class GetLightningWithdrawalsResponse(BaseModel, BaseConfig):
     )
 
 
-class GetOnChainWithdrawalsResponse(BaseModel, BaseConfig):
+class OnChainWithdrawal(BaseModel, BaseConfig):
+    """On-chain withdrawal item."""
+
     address: SkipValidation[str] = Field(..., description="Address to withdraw to")
     amount: SkipValidation[float] = Field(..., description="Amount to withdraw")
     created_at: SkipValidation[str] = Field(
@@ -137,29 +147,6 @@ class GetOnChainWithdrawalsResponse(BaseModel, BaseConfig):
     tx_id: SkipValidation[str] | None = Field(
         default=None, description="Transaction ID of the withdrawal"
     )
-
-
-class InternalTransfer(BaseModel, BaseConfig):
-    amount: SkipValidation[float]
-    created_at: SkipValidation[str]
-    from_uid: SkipValidation[UUID]
-    from_username: SkipValidation[str]
-    id: SkipValidation[UUID]
-    settled_at: SkipValidation[str] | None
-    success: SkipValidation[bool] | None
-    to_uid: SkipValidation[UUID]
-    to_username: SkipValidation[str]
-
-
-class PendingOnChainWithdrawalRequest(BaseModel, BaseConfig):
-    address: SkipValidation[str]
-    amount: SkipValidation[float]
-    created_at: SkipValidation[str]
-    fee: SkipValidation[float] | None
-    id: SkipValidation[UUID]
-    status: SkipValidation[Literal["pending"]]
-    tx_id: None = None
-    updated_at: SkipValidation[str]
 
 
 class DepositLightningResponse(BaseModel, BaseConfig):

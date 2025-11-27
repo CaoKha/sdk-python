@@ -10,9 +10,16 @@ from dotenv import load_dotenv
 
 from lnmarkets_sdk.v3.http.client import APIAuthContext, APIClientConfig, LNMClient
 from lnmarkets_sdk.v3.models.account import GetLightningDepositsParams
-from lnmarkets_sdk.v3.models.futures_cross import (
-    FuturesCrossOrderLimit,
+from lnmarkets_sdk.v3.models.futures_cross import FuturesCrossOrderLimit
+from lnmarkets_sdk.v3.models.futures_data import (
+    GetCandlesParams,
+    GetFundingSettlementsParams,
 )
+from lnmarkets_sdk.v3.models.futures_isolated import (
+    GetClosedTradesParams,
+    GetIsolatedFundingFeesParams,
+)
+from lnmarkets_sdk.v3.models.oracle import GetLastPriceParams
 
 load_dotenv()
 
@@ -58,6 +65,44 @@ async def example_public_endpoints():
         print("\n--- Ping ---")
         print(f"Response: {ping_response}")
 
+        # Get server time
+        await asyncio.sleep(1)
+        time_response = await client.time()
+        print("\n--- Server Time ---")
+        print(f"Response: {time_response}")
+
+        # Get futures candles
+        await asyncio.sleep(1)
+        candles_params = GetCandlesParams(
+            from_="2024-01-01T00:00:00.000Z",
+            range="1h",
+            limit=5,
+        )
+        candles = await client.futures.get_candles(candles_params)
+        print("\n--- Futures Candles (Last 5) ---")
+        for candle in candles.data[:3]:  # Show first 3
+            print(
+                f"Time: {candle.time}, OHLC: {candle.open}/{candle.high}/{candle.low}/{candle.close}"
+            )
+
+        # Get funding settlements
+        await asyncio.sleep(1)
+        funding_settlements = await client.futures.get_funding_settlements(
+            GetFundingSettlementsParams(limit=5)
+        )
+        print("\n--- Funding Settlements (Last 5) ---")
+        for settlement in funding_settlements.data[:3]:  # Show first 3
+            print(
+                f"Rate: {settlement.funding_rate}, Price: {settlement.fixing_price}, Time: {settlement.time}"
+            )
+
+        # Get oracle last price
+        await asyncio.sleep(1)
+        last_prices = await client.oracle.get_last_price(GetLastPriceParams(limit=5))
+        print("\n--- Oracle Last Price (Last 5) ---")
+        for price in last_prices[:3]:  # Show first 3
+            print(f"Price: {price.last_price}, Time: {price.time}")
+
 
 async def example_authenticated_endpoints():
     """Example: Use authenticated endpoints with credentials."""
@@ -84,7 +129,7 @@ async def example_authenticated_endpoints():
             secret=secret,
             passphrase=passphrase,
         ),
-        network="testnet4",
+        network="mainnet",
         timeout=60.0,  # 60 second timeout (default is 30s)
     )
 
@@ -122,6 +167,33 @@ async def example_authenticated_endpoints():
             print(
                 f"  {side} - Margin: {trade.margin} sats, Leverage: {trade.leverage}x, PL: {trade.pl} sats"
             )
+
+        # Get open trades
+        await asyncio.sleep(1)
+        open_trades = await client.futures.isolated.get_open_trades()
+        print(f"\n--- Open Isolated Trades (Count: {len(open_trades)}) ---")
+        for trade in open_trades[:3]:  # Show first 3
+            side = "LONG" if trade.side == "b" else "SHORT"
+            print(f"  {side} - Price: {trade.price}, Quantity: {trade.quantity}")
+
+        # Get closed trades
+        await asyncio.sleep(1)
+        closed_trades = await client.futures.isolated.get_closed_trades(
+            GetClosedTradesParams(limit=5)
+        )
+        print(f"\n--- Closed Isolated Trades (Last {len(closed_trades.data)}) ---")
+        for trade in closed_trades.data[:3]:  # Show first 3
+            side = "LONG" if trade.side == "b" else "SHORT"
+            print(f"  {side} - PL: {trade.pl} sats, Closed: {trade.closed}")
+
+        # Get isolated funding fees
+        await asyncio.sleep(1)
+        isolated_fees = await client.futures.isolated.get_funding_fees(
+            GetIsolatedFundingFeesParams(limit=5)
+        )
+        print(f"\n--- Isolated Funding Fees (Last {len(isolated_fees.data)}) ---")
+        for fee in isolated_fees.data[:3]:  # Show first 3
+            print(f"Fee: {fee.fee} sats, Time: {fee.time}")
 
         # Get cross margin position
         try:
