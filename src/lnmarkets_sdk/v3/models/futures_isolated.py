@@ -135,12 +135,12 @@ class CloseTradeParams(BaseModel, BaseConfig):
 
 class UpdateStoplossParams(BaseModel, BaseConfig):
     id: UUID = Field(..., description="Trade ID")
-    stoploss: float = Field(..., description="New stop loss price level")
+    value: float = Field(..., description="New stop loss price level")
 
 
 class UpdateTakeprofitParams(BaseModel, BaseConfig):
     id: UUID = Field(..., description="Trade ID")
-    takeprofit: float = Field(..., description="New take profit price level")
+    value: float = Field(..., description="New take profit price level")
 
 
 class GetClosedTradesParams(FromToLimitParams): ...

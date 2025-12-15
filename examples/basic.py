@@ -18,6 +18,7 @@ from lnmarkets_sdk.v3.models.futures_data import (
 from lnmarkets_sdk.v3.models.futures_isolated import (
     GetClosedTradesParams,
     GetIsolatedFundingFeesParams,
+    UpdateTakeprofitParams,
 )
 from lnmarkets_sdk.v3.models.oracle import GetLastPriceParams
 
@@ -32,7 +33,7 @@ async def example_public_endpoints():
 
     # Create client without authentication for public endpoints
     # The httpx.AsyncClient is created once and reuses connections
-    async with LNMClient(APIClientConfig(network="testnet4")) as client:
+    async with LNMClient(APIClientConfig(network="mainnet")) as client:
         # All these requests share the same connection pool
         print("\n🔄 Making multiple requests with connection reuse...")
 
@@ -220,6 +221,12 @@ async def example_authenticated_endpoints():
             print(f"New order: {new_order}")
         except Exception as e:
             print(f"Error: {e}")
+
+        print("\n --- Update take profit ---")
+        trade_id = "41ee6f7e-7cee-4c3b-b9f3-962d4b3b97c6"
+        params = UpdateTakeprofitParams(id=trade_id, value=100_000)
+        updated = await client.futures.isolated.update_takeprofit(params)
+        print(f"New take profit: {updated.takeprofit}")
 
 
 async def main():

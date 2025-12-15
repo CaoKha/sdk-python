@@ -236,7 +236,7 @@ class FuturesIsolatedClient:
         from lnmarkets_sdk.v3.models.futures_isolated import UpdateStoplossParams
 
         async with LNMClient(config) as client:
-            params = UpdateStoplossParams(id=trade_id, stoploss=90_000)
+            params = UpdateStoplossParams(id=trade_id, value=90000)
             updated = await client.futures.isolated.update_stoploss(params)
             print(f"New stop loss: {updated.stoploss}")
         ```
@@ -258,11 +258,12 @@ class FuturesIsolatedClient:
         from lnmarkets_sdk.v3.models.futures_isolated import UpdateTakeprofitParams
 
         async with LNMClient(config) as client:
-            params = UpdateTakeprofitParams(id=trade_id, takeprofit=110_000)
+            params = UpdateTakeprofitParams(id=trade_id, value=10000)
             updated = await client.futures.isolated.update_takeprofit(params)
             print(f"New take profit: {updated.takeprofit}")
         ```
         """
+        print(f"params: {params}")
         return await self._client.request(
             "PUT",
             "/futures/isolated/trade/takeprofit",
