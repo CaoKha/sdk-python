@@ -3,11 +3,10 @@ from typing import Any, Literal
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, SkipValidation, ValidationError
 from pydantic.alias_generators import to_camel
-from pydantic.types import UUID4
 
 type APINetwork = Literal["mainnet", "testnet4"]
 type APIMethod = Literal["GET", "POST", "PUT"]
-type UUID = UUID4
+type UUID = str
 
 
 class BaseConfig:

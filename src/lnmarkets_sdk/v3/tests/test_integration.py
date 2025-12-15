@@ -354,7 +354,6 @@ class TestFuturesIntegration:
             assert isinstance(ticker.prices, list)
             if len(ticker.prices) > 0:
                 price_bucket = ticker.prices[0]
-                print(price_bucket)
                 assert price_bucket.max_size > 0
                 assert price_bucket.min_size >= 0
                 if price_bucket.ask_price is not None:
@@ -621,7 +620,7 @@ class TestFuturesIsolatedIntegration:
             running_trades = await client.futures.isolated.get_running_trades()
             if len(running_trades) > 0:
                 trade = running_trades[0]
-                params = UpdateStoplossParams(id=trade.id, stoploss=50_000)
+                params = UpdateStoplossParams(id=trade.id, value=50_000)
                 updated = await client.futures.isolated.update_stoploss(params)
                 assert updated.id == trade.id
                 assert updated.running is True
@@ -640,7 +639,7 @@ class TestFuturesIsolatedIntegration:
             running_trades = await client.futures.isolated.get_running_trades()
             if len(running_trades) > 0:
                 trade = running_trades[0]
-                params = UpdateTakeprofitParams(id=trade.id, takeprofit=150_000)
+                params = UpdateTakeprofitParams(id=trade.id, value=150_000)
                 updated = await client.futures.isolated.update_takeprofit(params)
                 assert updated.id == trade.id
                 assert updated.running is True
