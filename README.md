@@ -9,7 +9,7 @@ This is the Python version of the LN Markets API SDK. It provides a client-based
 For public endpoints, you can just do this:
 
 ```python
-from lnmarkets_sdk.v3.http.client import LNMClient
+from lnmarkets_sdk.rest_v3.http.client import LNMClient
 import asyncio
 
 async with LNMClient() as client:
@@ -23,7 +23,7 @@ Remember to sleep between requests, as the rate limit is 1 requests per second f
 For endpoints that need authentication, you need to create an instance of the `LNMClient` class and provide your API credentials:
 
 ```python
-from lnmarkets_sdk.v3.http.client import APIAuthContext, APIClientConfig, LNMClient
+from lnmarkets_sdk.rest_v3.http.client import APIAuthContext, APIClientConfig, LNMClient
 
 config = APIClientConfig(
     authentication=APIAuthContext(
@@ -43,8 +43,8 @@ For endpoints that requires input parameters, you can find the corresponding mod
 
 ```python
 
-from lnmarkets_sdk.v3.http.client import APIAuthContext, APIClientConfig, LNMClient
-from lnmarkets_sdk.v3.models.account import GetLightningDepositsParams
+from lnmarkets_sdk.rest_v3.http.client import APIAuthContext, APIClientConfig, LNMClient
+from lnmarkets_sdk.rest_v3.models.account import GetLightningDepositsParams
 
 config = APIClientConfig(
     authentication=APIAuthContext(

@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lnmarkets_sdk.v3.http.client import LNMClient
+    from lnmarkets_sdk.rest_v3.http.client import LNMClient
 
-from lnmarkets_sdk.v3._internal.models import PaginatedResponse
-from lnmarkets_sdk.v3.models.funding_fees import FundingFees
-from lnmarkets_sdk.v3.models.futures_cross import (
+from lnmarkets_sdk.rest_v3._internal.models import PaginatedResponse
+from lnmarkets_sdk.rest_v3.models.funding_fees import FundingFees
+from lnmarkets_sdk.rest_v3.models.futures_cross import (
     CancelOrderParams,
     DepositParams,
     FuturesCrossCanceledOrder,
@@ -37,7 +37,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import FuturesCrossOrderLimit
+        from lnmarkets_sdk.rest_v3.models.futures_cross import FuturesCrossOrderLimit
 
         async with LNMClient(config) as client:
             params = FuturesCrossOrderLimit(
@@ -104,7 +104,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import GetFilledOrdersParams
+        from lnmarkets_sdk.rest_v3.models.futures_cross import GetFilledOrdersParams
 
         async with LNMClient(config) as client:
             params = GetFilledOrdersParams(limit=10)
@@ -151,7 +151,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import CancelOrderParams
+        from lnmarkets_sdk.rest_v3.models.futures_cross import CancelOrderParams
 
         async with LNMClient(config) as client:
             params = CancelOrderParams(id=order_id)
@@ -191,7 +191,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import DepositParams
+        from lnmarkets_sdk.rest_v3.models.futures_cross import DepositParams
 
         async with LNMClient(config) as client:
             params = DepositParams(amount=100_000)
@@ -213,7 +213,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import WithdrawParams
+        from lnmarkets_sdk.rest_v3.models.futures_cross import WithdrawParams
 
         async with LNMClient(config) as client:
             params = WithdrawParams(amount=50_000)
@@ -235,7 +235,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import SetLeverageParams
+        from lnmarkets_sdk.rest_v3.models.futures_cross import SetLeverageParams
 
         async with LNMClient(config) as client:
             params = SetLeverageParams(leverage=50)
@@ -257,7 +257,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import GetTransfersParams
+        from lnmarkets_sdk.rest_v3.models.futures_cross import GetTransfersParams
 
         async with LNMClient(config) as client:
             params = GetTransfersParams(limit=10)
@@ -282,7 +282,7 @@ class FuturesCrossClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_cross import GetCrossFundingFeesParams
+        from lnmarkets_sdk.rest_v3.models.futures_cross import GetCrossFundingFeesParams
 
         async with LNMClient(config) as client:
             params = GetCrossFundingFeesParams(limit=10)

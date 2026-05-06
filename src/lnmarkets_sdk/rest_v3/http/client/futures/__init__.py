@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lnmarkets_sdk.v3.http.client import LNMClient
+    from lnmarkets_sdk.rest_v3.http.client import LNMClient
 
-from lnmarkets_sdk.v3._internal.models import PaginatedResponse
-from lnmarkets_sdk.v3.models.funding_fees import FundingSettlement
-from lnmarkets_sdk.v3.models.futures_data import (
+from lnmarkets_sdk.rest_v3._internal.models import PaginatedResponse
+from lnmarkets_sdk.rest_v3.models.funding_fees import FundingSettlement
+from lnmarkets_sdk.rest_v3.models.futures_data import (
     Candle,
     GetCandlesParams,
     GetFundingSettlementsParams,
@@ -73,7 +73,7 @@ class FuturesClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_data import GetCandlesParams
+        from lnmarkets_sdk.rest_v3.models.futures_data import GetCandlesParams
 
         async with LNMClient(config) as client:
             params = GetCandlesParams(
@@ -105,7 +105,7 @@ class FuturesClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_data import GetFundingSettlementsParams
+        from lnmarkets_sdk.rest_v3.models.futures_data import GetFundingSettlementsParams
 
         async with LNMClient(config) as client:
             params = GetFundingSettlementsParams(limit=10)

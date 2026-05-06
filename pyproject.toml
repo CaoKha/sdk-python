@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 urls = { "Homepage" = "https://github.com/ln-markets/sdk-python", "Repository" = "https://github.com/ln-markets/sdk-python", "Bug Tracker" = "https://github.com/ln-markets/sdk-python/issues" }
 
 name = "lnmarkets-sdk"
-version = "0.0.18"
+version = "0.0.20"
 description = "LN Markets API Python SDK"
 readme = "README.md"
 license = { text = "MIT" }
@@ -33,7 +33,7 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["requests>=2.32.3", "pydantic>=2.12.2", "httpx>=0.28.1"]
+dependencies = ["requests>=2.32.3", "pydantic>=2.12.2", "httpx>=0.28.1", "websockets>=12.0"]
 
 
 [dependency-groups]

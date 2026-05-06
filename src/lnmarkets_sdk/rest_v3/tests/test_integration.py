@@ -6,8 +6,8 @@ import os
 import pytest
 from dotenv import load_dotenv
 
-from lnmarkets_sdk.v3.http.client import APIAuthContext, APIClientConfig, LNMClient
-from lnmarkets_sdk.v3.models.account import (
+from lnmarkets_sdk.rest_v3.http.client import APIAuthContext, APIClientConfig, LNMClient
+from lnmarkets_sdk.rest_v3.models.account import (
     AddBitcoinAddressParams,
     DepositLightningParams,
     GetInternalDepositsParams,
@@ -20,7 +20,7 @@ from lnmarkets_sdk.v3.models.account import (
     WithdrawLightningParams,
     WithdrawOnChainParams,
 )
-from lnmarkets_sdk.v3.models.futures_cross import (
+from lnmarkets_sdk.rest_v3.models.futures_cross import (
     CancelOrderParams,
     DepositParams,
     FuturesCrossOrderLimit,
@@ -30,11 +30,11 @@ from lnmarkets_sdk.v3.models.futures_cross import (
     SetLeverageParams,
     WithdrawParams,
 )
-from lnmarkets_sdk.v3.models.futures_data import (
+from lnmarkets_sdk.rest_v3.models.futures_data import (
     GetCandlesParams,
     GetFundingSettlementsParams,
 )
-from lnmarkets_sdk.v3.models.futures_isolated import (
+from lnmarkets_sdk.rest_v3.models.futures_isolated import (
     AddMarginParams,
     CancelTradeParams,
     CashInParams,
@@ -45,8 +45,8 @@ from lnmarkets_sdk.v3.models.futures_isolated import (
     UpdateStoplossParams,
     UpdateTakeprofitParams,
 )
-from lnmarkets_sdk.v3.models.oracle import GetIndexParams
-from lnmarkets_sdk.v3.models.synthetic_usd import GetSwapsParams, NewSwapParams
+from lnmarkets_sdk.rest_v3.models.oracle import GetIndexParams
+from lnmarkets_sdk.rest_v3.models.synthetic_usd import GetSwapsParams, NewSwapParams
 
 load_dotenv()
 

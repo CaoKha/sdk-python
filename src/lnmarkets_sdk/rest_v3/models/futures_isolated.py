@@ -2,7 +2,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, SkipValidation, model_validator
 
-from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig, FromToLimitParams
+from lnmarkets_sdk.rest_v3._internal.models import UUID, BaseConfig, FromToLimitParams
 
 
 class FuturesOrder(BaseModel, BaseConfig):

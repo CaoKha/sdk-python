@@ -3,9 +3,13 @@ from types import UnionType
 
 from pydantic import BaseModel
 
-from lnmarkets_sdk.v3._internal import BaseClient
-from lnmarkets_sdk.v3._internal.models import APIAuthContext, APIClientConfig, APIMethod
-from lnmarkets_sdk.v3._internal.utils import get_hostname, parse_response
+from lnmarkets_sdk.rest_v3._internal import BaseClient
+from lnmarkets_sdk.rest_v3._internal.models import (
+    APIAuthContext,
+    APIClientConfig,
+    APIMethod,
+)
+from lnmarkets_sdk.rest_v3._internal.utils import get_hostname, parse_response
 
 from .account import AccountClient
 from .futures import FuturesClient
@@ -31,8 +35,8 @@ class LNMClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.http.client import LNMClient, APIClientConfig, APIAuthContext
-        from lnmarkets_sdk.v3.models.futures_isolated import FuturesOrder
+        from lnmarkets_sdk.rest_v3.http.client import LNMClient, APIClientConfig, APIAuthContext
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import FuturesOrder
 
         config = APIClientConfig(
             authentication=APIAuthContext(

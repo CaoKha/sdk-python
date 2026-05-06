@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lnmarkets_sdk.v3.http.client import LNMClient
+    from lnmarkets_sdk.rest_v3.http.client import LNMClient
 
-from lnmarkets_sdk.v3.models.oracle import (
+from lnmarkets_sdk.rest_v3.models.oracle import (
     GetIndexParams,
     GetLastPriceParams,
     OracleIndex,
@@ -23,7 +23,7 @@ class OracleClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.oracle import GetIndexParams
+        from lnmarkets_sdk.rest_v3.models.oracle import GetIndexParams
 
         async with LNMClient(config) as client:
             params = GetIndexParams(limit=10, from_="2023-05-23T09:52:57.863Z")
@@ -48,7 +48,7 @@ class OracleClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.oracle import GetLastPriceParams
+        from lnmarkets_sdk.rest_v3.models.oracle import GetLastPriceParams
 
         async with LNMClient(config) as client:
             params = GetLastPriceParams(limit=10, from_="2023-05-23T09:52:57.863Z")

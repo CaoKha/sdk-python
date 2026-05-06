@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, SkipValidation
 
-from lnmarkets_sdk.v3._internal.models import UUID, BaseConfig
+from lnmarkets_sdk.rest_v3._internal.models import UUID, BaseConfig
 
 
 class FundingFees(BaseModel, BaseConfig):

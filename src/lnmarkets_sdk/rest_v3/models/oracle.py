@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, SkipValidation
 
-from lnmarkets_sdk.v3._internal.models import BaseConfig, FromToLimitParams
+from lnmarkets_sdk.rest_v3._internal.models import BaseConfig, FromToLimitParams
 
 
 class OracleIndex(BaseModel, BaseConfig):

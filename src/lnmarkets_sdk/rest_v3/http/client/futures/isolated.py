@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lnmarkets_sdk.v3.http.client import LNMClient
+    from lnmarkets_sdk.rest_v3.http.client import LNMClient
 
-from lnmarkets_sdk.v3._internal.models import PaginatedResponse
-from lnmarkets_sdk.v3.models.funding_fees import FundingFees
-from lnmarkets_sdk.v3.models.futures_isolated import (
+from lnmarkets_sdk.rest_v3._internal.models import PaginatedResponse
+from lnmarkets_sdk.rest_v3.models.funding_fees import FundingFees
+from lnmarkets_sdk.rest_v3.models.futures_isolated import (
     AddMarginParams,
     CancelTradeParams,
     CashInParams,
@@ -34,7 +34,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import FuturesOrder
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import FuturesOrder
 
         async with LNMClient(config) as client:
             params = FuturesOrder(
@@ -102,7 +102,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import GetClosedTradesParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import GetClosedTradesParams
 
         async with LNMClient(config) as client:
             params = GetClosedTradesParams(limit=10)
@@ -127,7 +127,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import CloseTradeParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import CloseTradeParams
 
         async with LNMClient(config) as client:
             params = CloseTradeParams(id=trade_id)
@@ -149,7 +149,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import CancelTradeParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import CancelTradeParams
 
         async with LNMClient(config) as client:
             params = CancelTradeParams(id=trade_id)
@@ -189,7 +189,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import AddMarginParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import AddMarginParams
 
         async with LNMClient(config) as client:
             params = AddMarginParams(id=trade_id, amount=10_000)
@@ -211,7 +211,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import CashInParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import CashInParams
 
         async with LNMClient(config) as client:
             params = CashInParams(id=trade_id, amount=10_000)
@@ -233,7 +233,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import UpdateStoplossParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import UpdateStoplossParams
 
         async with LNMClient(config) as client:
             params = UpdateStoplossParams(id=trade_id, value=90000)
@@ -255,7 +255,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import UpdateTakeprofitParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import UpdateTakeprofitParams
 
         async with LNMClient(config) as client:
             params = UpdateTakeprofitParams(id=trade_id, value=10000)
@@ -280,7 +280,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import GetIsolatedFundingFeesParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import GetIsolatedFundingFeesParams
 
         async with LNMClient(config) as client:
             params = GetIsolatedFundingFeesParams(limit=10, trade_id=trade_id)
@@ -305,7 +305,7 @@ class FuturesIsolatedClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.futures_isolated import GetClosedTradesParams
+        from lnmarkets_sdk.rest_v3.models.futures_isolated import GetClosedTradesParams
 
         async with LNMClient(config) as client:
             params = GetClosedTradesParams(limit=10)

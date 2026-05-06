@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lnmarkets_sdk.v3.http.client import LNMClient
+    from lnmarkets_sdk.rest_v3.http.client import LNMClient
 
-from lnmarkets_sdk.v3._internal.models import PaginatedResponse
-from lnmarkets_sdk.v3.models.synthetic_usd import (
+from lnmarkets_sdk.rest_v3._internal.models import PaginatedResponse
+from lnmarkets_sdk.rest_v3.models.synthetic_usd import (
     BestPriceResponse,
     CreateSwapOutput,
     GetSwapsParams,
@@ -43,7 +43,7 @@ class SyntheticUSDClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.synthetic_usd import GetSwapsParams
+        from lnmarkets_sdk.rest_v3.models.synthetic_usd import GetSwapsParams
 
         async with LNMClient(config) as client:
             params = GetSwapsParams(limit=10)
@@ -68,7 +68,7 @@ class SyntheticUSDClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.synthetic_usd import NewSwapParams
+        from lnmarkets_sdk.rest_v3.models.synthetic_usd import NewSwapParams
 
         async with LNMClient(config) as client:
             params = NewSwapParams(

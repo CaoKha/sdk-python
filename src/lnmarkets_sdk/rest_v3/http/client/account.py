@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lnmarkets_sdk.v3.http.client import LNMClient
+    from lnmarkets_sdk.rest_v3.http.client import LNMClient
 
-from lnmarkets_sdk.v3._internal.models import PaginatedResponse
-from lnmarkets_sdk.v3.models.account import (
+from lnmarkets_sdk.rest_v3._internal.models import PaginatedResponse
+from lnmarkets_sdk.rest_v3.models.account import (
     Account,
     AddBitcoinAddressParams,
     AddBitcoinAddressResponse,
@@ -83,7 +83,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import AddBitcoinAddressParams
+        from lnmarkets_sdk.rest_v3.models.account import AddBitcoinAddressParams
 
         async with LNMClient(config) as client:
             params = AddBitcoinAddressParams(format="p2wpkh")
@@ -105,7 +105,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import DepositLightningParams
+        from lnmarkets_sdk.rest_v3.models.account import DepositLightningParams
 
         async with LNMClient(config) as client:
             params = DepositLightningParams(
@@ -130,7 +130,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import WithdrawLightningParams
+        from lnmarkets_sdk.rest_v3.models.account import WithdrawLightningParams
 
         async with LNMClient(config) as client:
             params = WithdrawLightningParams(invoice="lnbc...")
@@ -152,7 +152,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import WithdrawInternalParams
+        from lnmarkets_sdk.rest_v3.models.account import WithdrawInternalParams
 
         async with LNMClient(config) as client:
             params = WithdrawInternalParams(amount=100_000, to_username="user123")
@@ -174,7 +174,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import WithdrawOnChainParams
+        from lnmarkets_sdk.rest_v3.models.account import WithdrawOnChainParams
 
         async with LNMClient(config) as client:
             params = WithdrawOnChainParams(
@@ -201,7 +201,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import GetLightningDepositsParams
+        from lnmarkets_sdk.rest_v3.models.account import GetLightningDepositsParams
 
         async with LNMClient(config) as client:
             params = GetLightningDepositsParams(limit=10, settled=True)
@@ -228,7 +228,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import GetLightningWithdrawalsParams
+        from lnmarkets_sdk.rest_v3.models.account import GetLightningWithdrawalsParams
 
         async with LNMClient(config) as client:
             params = GetLightningWithdrawalsParams(
@@ -258,7 +258,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import GetInternalDepositsParams
+        from lnmarkets_sdk.rest_v3.models.account import GetInternalDepositsParams
 
         async with LNMClient(config) as client:
             params = GetInternalDepositsParams(limit=10)
@@ -285,7 +285,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import GetInternalWithdrawalsParams
+        from lnmarkets_sdk.rest_v3.models.account import GetInternalWithdrawalsParams
 
         async with LNMClient(config) as client:
             params = GetInternalWithdrawalsParams(limit=10)
@@ -312,7 +312,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import GetOnChainDepositsParams
+        from lnmarkets_sdk.rest_v3.models.account import GetOnChainDepositsParams
 
         async with LNMClient(config) as client:
             params = GetOnChainDepositsParams(
@@ -342,7 +342,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import GetOnChainWithdrawalsParams
+        from lnmarkets_sdk.rest_v3.models.account import GetOnChainWithdrawalsParams
 
         async with LNMClient(config) as client:
             params = GetOnChainWithdrawalsParams(
@@ -370,7 +370,7 @@ class AccountClient:
 
         Example:
         ```python
-        from lnmarkets_sdk.v3.models.account import GetNotificationsParams
+        from lnmarkets_sdk.rest_v3.models.account import GetNotificationsParams
 
         async with LNMClient(config) as client:
             params = GetNotificationsParams(limit=10)

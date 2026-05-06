@@ -8,19 +8,19 @@ from pprint import pprint
 
 from dotenv import load_dotenv
 
-from lnmarkets_sdk.v3.http.client import APIAuthContext, APIClientConfig, LNMClient
-from lnmarkets_sdk.v3.models.account import GetLightningDepositsParams
-from lnmarkets_sdk.v3.models.futures_cross import FuturesCrossOrderLimit
-from lnmarkets_sdk.v3.models.futures_data import (
+from lnmarkets_sdk.rest_v3.http.client import APIAuthContext, APIClientConfig, LNMClient
+from lnmarkets_sdk.rest_v3.models.account import GetLightningDepositsParams
+from lnmarkets_sdk.rest_v3.models.futures_cross import FuturesCrossOrderLimit
+from lnmarkets_sdk.rest_v3.models.futures_data import (
     GetCandlesParams,
     GetFundingSettlementsParams,
 )
-from lnmarkets_sdk.v3.models.futures_isolated import (
+from lnmarkets_sdk.rest_v3.models.futures_isolated import (
     GetClosedTradesParams,
     GetIsolatedFundingFeesParams,
     UpdateTakeprofitParams,
 )
-from lnmarkets_sdk.v3.models.oracle import GetLastPriceParams
+from lnmarkets_sdk.rest_v3.models.oracle import GetLastPriceParams
 
 load_dotenv()
 
