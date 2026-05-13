@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 urls = { "Homepage" = "https://github.com/ln-markets/sdk-python", "Repository" = "https://github.com/ln-markets/sdk-python", "Bug Tracker" = "https://github.com/ln-markets/sdk-python/issues" }
 
 name = "lnmarkets-sdk"
-version = "0.0.18"
+version = "0.1.0"
 description = "LN Markets API Python SDK"
 readme = "README.md"
 license = { text = "MIT" }
@@ -33,7 +33,7 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["requests>=2.32.3", "pydantic>=2.12.2", "httpx>=0.28.1"]
+dependencies = ["requests>=2.32.3", "pydantic>=2.12.2", "httpx>=0.28.1", "websockets>=12.0", "orjson>=3.10.0"]
 
 
 [dependency-groups]
@@ -41,9 +41,9 @@ dev = [
   { include-group = "lint" },
   { include-group = "test" },
   "python-dotenv>=1.0.1",
-  "playwright>=1.40.0",
   "faker>=37.12.0",
   "faker-crypto>=1.0.1",
+  "pyright>=1.1.407",
 ]
 lint = ["ruff>=0.12.0", "pyright>=1.1.390"]
 test = ["pytest", "pytest-asyncio", "pytest-httpx>=0.35.0"]
@@ -56,7 +56,19 @@ packages = ["src/lnmarkets_sdk"]
 
 [tool.pyright]
 pythonVersion = "3.13"
-typeCheckingMode = "basic"
+typeCheckingMode = "strict"
+include = ["src", "examples"]
+exclude = [
+  "**/__pycache__",
+  "**/.venv",
+  "**/tests/**",
+]
+reportMissingTypeStubs = false
+# Pydantic dynamic attrs produce "unknown" types pervasively; downgrade to warning.
+reportUnknownMemberType = "warning"
+reportUnknownArgumentType = "warning"
+reportUnknownVariableType = "warning"
+reportUnknownLambdaType = "warning"
 
 [tool.ruff]
 line-length = 88
