@@ -2,6 +2,7 @@
 
 import asyncio
 import os
+from typing import Any
 
 import pytest
 from dotenv import load_dotenv
@@ -90,7 +91,7 @@ class TestBasicsIntegration:
 
     async def test_time(self):
         async with LNMClient(create_public_config()) as client:
-            result = await client.request("GET", "/time")
+            result: Any = await client.request("GET", "/time")
             assert "time" in result
             assert isinstance(result["time"], str)
 
@@ -451,8 +452,7 @@ class TestFuturesIsolatedIntegration:
                 assert closed_trade.closed is True
                 assert closed_trade.open is False
                 assert closed_trade.running is False
-                if closed_trade.closed_at is not None:
-                    assert isinstance(closed_trade.closed_at, str)
+                assert isinstance(closed_trade.closed_at, str)
 
     @pytest.mark.skipif(
         not os.environ.get("TESTNET4_API_KEY"),
@@ -515,8 +515,7 @@ class TestFuturesIsolatedIntegration:
                 assert closed.closed is True
                 assert closed.open is False
                 assert closed.running is False
-                if closed.closed_at is not None:
-                    assert isinstance(closed.closed_at, str)
+                assert isinstance(closed.closed_at, str)
             except Exception as e:
                 # May fail if no running trades or insufficient margin
                 assert len(str(e)) > 0
