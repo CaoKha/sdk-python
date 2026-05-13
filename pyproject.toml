@@ -33,20 +33,27 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["requests>=2.32.3", "pydantic>=2.12.2", "httpx>=0.28.1", "websockets>=12.0", "orjson>=3.10.0"]
+dependencies = [
+    "requests>=2.32.3",
+    "pydantic>=2.12.2",
+    "httpx>=0.28.1",
+    "websockets>=12.0",
+    "orjson>=3.10.0",
+    "pygments>=2.20.0",
+]
 
 
 [dependency-groups]
 dev = [
   { include-group = "lint" },
   { include-group = "test" },
-  "python-dotenv>=1.0.1",
+  "python-dotenv>=1.2.2",
   "faker>=37.12.0",
   "faker-crypto>=1.0.1",
   "pyright>=1.1.407",
 ]
 lint = ["ruff>=0.12.0", "pyright>=1.1.390"]
-test = ["pytest", "pytest-asyncio", "pytest-httpx>=0.35.0"]
+test = ["pytest>=9.0.3", "pytest-asyncio", "pytest-httpx>=0.35.0"]
 
 [tool.hatch.build.metadata]
 include = ["src/**", "README.md", "LICENSE"]
