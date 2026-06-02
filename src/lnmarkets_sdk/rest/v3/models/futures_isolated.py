@@ -78,6 +78,14 @@ class FuturesTrade(BaseModel, BaseConfig):
     running: SkipValidation[bool]
     side: SkipValidation[Literal["buy", "sell"]]
     stoploss: SkipValidation[float]
+    sum_cash_in_margin: SkipValidation[float] = Field(
+        default=0.0,
+        description="Total amount cashed in from margin over the trade lifetime",
+    )
+    sum_cash_in_pl: SkipValidation[float] = Field(
+        default=0.0,
+        description="Total amount cashed in from PL over the trade lifetime",
+    )
     sum_funding_fees: SkipValidation[float]
     takeprofit: SkipValidation[float]
     type: SkipValidation[Literal["limit", "market"]]
