@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 urls = { "Homepage" = "https://github.com/CaoKha/sdk-python", "Repository" = "https://github.com/CaoKha/sdk-python", "Bug Tracker" = "https://github.com/CaoKha/sdk-python/issues" }
 
 name = "caokha-lnmarkets-sdk"
-version = "0.1.3"
+version = "0.1.5"
 description = "LN Markets API Python SDK"
 readme = "README.md"
 license = { text = "MIT" }

@@ -106,6 +106,8 @@ client.futures.isolated.add_margin()
 client.futures.isolated.cash_in()
 client.futures.isolated.update_stoploss()
 client.futures.isolated.update_takeprofit()
+client.futures.isolated.remove_stoploss()
+client.futures.isolated.remove_takeprofit()
 client.futures.isolated.get_funding_fees()
 
 # Futures Cross 🔒

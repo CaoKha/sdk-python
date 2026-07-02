@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-07-02
+
+### Added
+
+- `futures.isolated.remove_stoploss()` method — maps to `DELETE /futures/isolated/trade/stoploss` (clears fixed stop and trailing distance).
+- `futures.isolated.remove_takeprofit()` method — maps to `DELETE /futures/isolated/trade/takeprofit`.
+- `mode` field on `UpdateStoplossParams` (`"fixed"` | `"trailing"`, default `"fixed"`) — set a trailing stop via `update_stoploss` with `mode="trailing"` and `value` as a fractional distance.
+- `stoploss_trailing_distance` field on the trade response model.
+
+## [0.1.1] - 2026-06-02
+
+### Added
+
+- `sum_cash_in_margin` and `sum_cash_in_pl` fields on the trade response model.
+
 ## [0.1.0] - 2026-05-13
 
 ### Added
