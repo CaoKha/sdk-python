@@ -62,7 +62,7 @@ class BaseClient:
 
             data = ""
             if params_dict:
-                if method == "GET":
+                if method in ("GET", "DELETE"):
                     data = f"?{urlencode(params_dict)}"
                     data = re.sub(r"=(True)", "=true", data)
                     data = re.sub(r"=(False)", "=false", data)
@@ -74,7 +74,7 @@ class BaseClient:
             headers.update(auth_headers)
 
         # Use httpx native parameter handling
-        if method == "GET":
+        if method in ("GET", "DELETE"):
             return await self._client.request(
                 method, path, params=params_dict, headers=headers if headers else None
             )

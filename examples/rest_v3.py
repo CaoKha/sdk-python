@@ -36,6 +36,9 @@ from lnmarkets_sdk.rest.v3.models.futures_isolated import (
     FuturesOrder,
     GetClosedTradesParams,
     GetIsolatedFundingFeesParams,
+    RemoveStoplossParams,
+    RemoveTakeprofitParams,
+    UpdateStoplossParams,
     UpdateTakeprofitParams,
 )
 from lnmarkets_sdk.rest.v3.models.oracle import GetLastPriceParams
@@ -276,6 +279,70 @@ async def example_authenticated_endpoints(network: Network):
             tp_params = UpdateTakeprofitParams(id=opened.id, value=200_000)
             updated = await client.futures.isolated.update_takeprofit(tp_params)
             print(f"New take profit: {updated.takeprofit}")
+
+            await asyncio.sleep(1)
+            closed = await client.futures.isolated.close(CloseTradeParams(id=opened.id))
+            print(f"Closed trade {closed.id} - PL: {closed.pl} sats")
+        except Exception as e:
+            print(f"Error: {e}")
+
+        print("\n --- Set a trailing stop, then remove stop loss and take profit ---")
+        try:
+            # Fetch the current price so the stop/take-profit levels are valid
+            # whatever BTC is trading at. Prices must be a multiple of 0.5.
+            last_prices = await client.oracle.get_last_price(
+                GetLastPriceParams(limit=1)
+            )
+            price = last_prices[0].last_price
+            # Long trade: stop just below entry (above liquidation), take profit
+            # above entry. Prices must be a multiple of 0.5.
+            stoploss = round(price * 0.98 * 2) / 2
+            takeprofit = round(price * 1.5 * 2) / 2
+            print(
+                f"BTC price: {price} -> stoploss: {stoploss}, takeprofit: {takeprofit}"
+            )
+
+            await asyncio.sleep(1)
+            opened = await client.futures.isolated.new_trade(
+                FuturesOrder(
+                    type="market",
+                    side="buy",
+                    quantity=1,
+                    leverage=10,
+                    stoploss=stoploss,
+                    takeprofit=takeprofit,
+                )
+            )
+            print(
+                f"Opened trade ID: {opened.id}, "
+                f"stoploss: {opened.stoploss}, takeprofit: {opened.takeprofit}"
+            )
+
+            # Switch to a trailing stop: `value` is a fraction of price, not an
+            # absolute price. The upper bound is capped by liquidation (~1/leverage),
+            # so keep it comfortably under that for a 10x position.
+            await asyncio.sleep(1)
+            trailing = await client.futures.isolated.update_stoploss(
+                UpdateStoplossParams(id=opened.id, value=0.05, mode="trailing")
+            )
+            print(f"Trailing distance: {trailing.stoploss_trailing_distance}")
+
+            # Remove the stop loss (clears both fixed stop and trailing distance).
+            await asyncio.sleep(1)
+            no_sl = await client.futures.isolated.remove_stoploss(
+                RemoveStoplossParams(id=opened.id)
+            )
+            print(
+                f"After remove_stoploss -> stoploss: {no_sl.stoploss}, "
+                f"trailing: {no_sl.stoploss_trailing_distance}"
+            )
+
+            # Remove the take profit.
+            await asyncio.sleep(1)
+            no_tp = await client.futures.isolated.remove_takeprofit(
+                RemoveTakeprofitParams(id=opened.id)
+            )
+            print(f"After remove_takeprofit -> takeprofit: {no_tp.takeprofit}")
 
             await asyncio.sleep(1)
             closed = await client.futures.isolated.close(CloseTradeParams(id=opened.id))

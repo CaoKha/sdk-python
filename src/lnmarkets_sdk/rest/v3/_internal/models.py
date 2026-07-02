@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, SkipValidation, ValidationErr
 from pydantic.alias_generators import to_camel
 
 type APINetwork = Literal["mainnet", "testnet4"]
-type APIMethod = Literal["GET", "POST", "PUT"]
+type APIMethod = Literal["GET", "POST", "PUT", "DELETE"]
 type UUID = str
 
 

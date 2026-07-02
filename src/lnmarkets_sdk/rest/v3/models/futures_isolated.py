@@ -78,6 +78,10 @@ class FuturesTrade(BaseModel, BaseConfig):
     running: SkipValidation[bool]
     side: SkipValidation[Literal["buy", "sell"]]
     stoploss: SkipValidation[float]
+    stoploss_trailing_distance: SkipValidation[float] = Field(
+        default=0.0,
+        description="Trailing stop distance as a fraction of price (0 if not trailing)",
+    )
     sum_cash_in_margin: SkipValidation[float] = Field(
         default=0.0,
         description="Total amount cashed in from margin over the trade lifetime",
@@ -149,12 +153,30 @@ class CloseTradeParams(BaseModel, BaseConfig):
 
 class UpdateStoplossParams(BaseModel, BaseConfig):
     id: UUID = Field(..., description="Trade ID")
-    value: float = Field(..., description="New stop loss price level")
+    value: float = Field(
+        ...,
+        description=(
+            "A price (mode='fixed') or trailing distance as a fraction of price "
+            "(mode='trailing', between 0.001 and 10). 0 removes the stop."
+        ),
+    )
+    mode: Literal["fixed", "trailing"] = Field(
+        default="fixed",
+        description="How `value` is interpreted. Defaults to 'fixed'.",
+    )
 
 
 class UpdateTakeprofitParams(BaseModel, BaseConfig):
     id: UUID = Field(..., description="Trade ID")
     value: float = Field(..., description="New take profit price level")
+
+
+class RemoveStoplossParams(BaseModel, BaseConfig):
+    id: UUID = Field(..., description="Trade ID")
+
+
+class RemoveTakeprofitParams(BaseModel, BaseConfig):
+    id: UUID = Field(..., description="Trade ID")
 
 
 class GetClosedTradesParams(FromToLimitParams): ...

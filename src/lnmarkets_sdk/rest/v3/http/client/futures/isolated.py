@@ -17,6 +17,8 @@ from lnmarkets_sdk.rest.v3.models.futures_isolated import (
     FuturesRunningTrade,
     GetClosedTradesParams,
     GetIsolatedFundingFeesParams,
+    RemoveStoplossParams,
+    RemoveTakeprofitParams,
     UpdateStoplossParams,
     UpdateTakeprofitParams,
 )
@@ -272,6 +274,56 @@ class FuturesIsolatedClient:
             params=params,
             credentials=True,
             response_model=FuturesRunningTrade,
+        )
+
+    async def remove_stoploss(
+        self, params: RemoveStoplossParams
+    ) -> FuturesRunningTrade | FuturesOpenTrade:
+        """
+        Remove the stop loss from an isolated trade.
+
+        Clears both the fixed stop loss and the trailing distance.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.rest.v3.models.futures_isolated import RemoveStoplossParams
+
+        async with LNMClient(config) as client:
+            params = RemoveStoplossParams(id=trade_id)
+            updated = await client.futures.isolated.remove_stoploss(params)
+            print(f"Stop loss: {updated.stoploss}")
+        ```
+        """
+        return await self._client.request(
+            "DELETE",
+            "/futures/isolated/trade/stoploss",
+            params=params,
+            credentials=True,
+            response_model=FuturesRunningTrade | FuturesOpenTrade,
+        )
+
+    async def remove_takeprofit(
+        self, params: RemoveTakeprofitParams
+    ) -> FuturesRunningTrade | FuturesOpenTrade:
+        """
+        Remove the take profit from an isolated trade.
+
+        Example:
+        ```python
+        from lnmarkets_sdk.rest.v3.models.futures_isolated import RemoveTakeprofitParams
+
+        async with LNMClient(config) as client:
+            params = RemoveTakeprofitParams(id=trade_id)
+            updated = await client.futures.isolated.remove_takeprofit(params)
+            print(f"Take profit: {updated.takeprofit}")
+        ```
+        """
+        return await self._client.request(
+            "DELETE",
+            "/futures/isolated/trade/takeprofit",
+            params=params,
+            credentials=True,
+            response_model=FuturesRunningTrade | FuturesOpenTrade,
         )
 
     async def get_funding_fees(
