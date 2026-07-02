@@ -393,6 +393,8 @@ class TestFuturesIsolatedIntegration:
                 assert trade.opening_fee >= 0
                 assert trade.closing_fee >= 0
                 assert trade.sum_funding_fees is not None
+                assert trade.sum_cash_in_pl is not None
+                assert trade.sum_cash_in_margin is not None
             except Exception as e:
                 pytest.skip("Could not create a new trade: " + str(e))
 
